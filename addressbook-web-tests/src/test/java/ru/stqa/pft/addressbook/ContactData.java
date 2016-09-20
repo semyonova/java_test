@@ -8,10 +8,10 @@ public class ContactData {
   private final String mobile;
   private final String email;
 
-  public ContactData(String firstName, String middleName, String LastName, String address, String mobile, String email) {
+  public ContactData(String firstName, String middleName, String lastName, String address, String mobile, String email) {
     this.firstName = firstName;
     this.middleName = middleName;
-    lastName = LastName;
+    this.lastName = lastName;
     this.address = address;
     this.mobile = mobile;
     this.email = email;
