@@ -31,6 +31,8 @@ public class ContactHelper extends BaseHelper {
     type(By.name("mobile"),contactData.getMobile());
     type(By.name("email"),contactData.getEmail());
 
+    //проверяем тип формы и в зависимости от типа заполняем поле
+    //если для формы Модификации контакта вдруг поле найдено, то выводим ошибку
     if (creation) {
       new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
     } else {
