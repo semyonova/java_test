@@ -40,13 +40,14 @@ public class ContactHelper extends BaseHelper {
     }
   }
 
-
-  public void initContactModification() {click(By.xpath("//table[@id='maintable']/tbody/tr[4]/td[8]/a/img"));
+  public void initContactModification() {click(By.xpath("//input[@type='checkbox']"));
   }
 
   public void submitContactModification() {click(By.name("update"));
   }
 
-  public void deleteContact() {click(By.xpath("//div[@id='content']/form[2]/input[2]"));
+  public void deleteContact() {
+    click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
+    wd.switchTo().alert().accept();
   }
 }
