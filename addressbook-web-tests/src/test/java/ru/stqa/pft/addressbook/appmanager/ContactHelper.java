@@ -19,8 +19,9 @@ public class ContactHelper extends BaseHelper {
   }
 
   public void submitContact() {
-    click(By.xpath("//div[@id='content']/form/input[21]"));
+    click(By.xpath("//img[title='Edit']"));
   }
+//"//div[@id='content']/form/input[21]"
 
   // Заполняет форму контактов
   public void fillContactForm(ContactData contactData, boolean creation) {
@@ -40,7 +41,7 @@ public class ContactHelper extends BaseHelper {
     }
   }
 
-  public void initContactModification() {click(By.xpath("//input[@type='checkbox']"));
+  public void chooseContact() {click(By.name("selected[]"));
   }
 
   public void submitContactModification() {click(By.name("update"));
@@ -49,5 +50,15 @@ public class ContactHelper extends BaseHelper {
   public void deleteContact() {
     click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
     wd.switchTo().alert().accept();
+  }
+
+  public void CreateContact(ContactData contactData, boolean creation) {
+    fillContactForm(contactData, creation);
+    submitContact();
+    returnToHomePage();
+  }
+
+  public boolean isThereContact() {
+    return isElementPresent(By.name("selected[]"));
   }
 }
