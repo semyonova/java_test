@@ -13,6 +13,7 @@ public class GroupCreationTests extends BaseTest {
     int beforeGroup = app.getGroupHelper().getGroupCount();
     app.getGroupHelper().CreateGroup(new GroupData("test1", null, null));
     int afterGroup = app.getGroupHelper().getGroupCount();
+    //Проверяем количство групп до и после выполнения теста
     Assert.assertEquals(beforeGroup + 1, afterGroup);
   }
 
