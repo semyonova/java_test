@@ -18,10 +18,15 @@ public class ContactHelper extends BaseHelper {
     click(By.linkText("home page"));
   }
 
-  public void submitContact() {
-    click(By.xpath("//img[title='Edit']"));
+  // Редактирование контакта
+  public void editContact() {
+    click(By.xpath("//table[@id='maintable']/tbody//td[8]/a/img"));
   }
-//"//div[@id='content']/form/input[21]"
+
+  // Клик по кнопке Enter на странице добавления Контакта
+  public void submitContact() {
+    click(By.name("submit"));
+  }
 
   // Заполняет форму контактов
   public void fillContactForm(ContactData contactData, boolean creation) {
@@ -44,6 +49,7 @@ public class ContactHelper extends BaseHelper {
   public void chooseContact() {click(By.name("selected[]"));
   }
 
+  // Клик по кнопке Update на странице редактирования контакта
   public void submitContactModification() {click(By.name("update"));
   }
 
