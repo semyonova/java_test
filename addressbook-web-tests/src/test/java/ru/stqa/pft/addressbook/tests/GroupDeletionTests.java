@@ -24,5 +24,9 @@ public class GroupDeletionTests extends BaseTest {
 
         //Проверяем количeство групп до и после выполнения теста
         Assert.assertEquals(beforeGroup.size() - 1, afterGroup.size());
+
+        // Сравниваем списки групп до и после выполнения теста
+        beforeGroup.remove(beforeGroup.size() - 1);
+        Assert.assertEquals(beforeGroup, afterGroup);
     }
 }

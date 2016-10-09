@@ -2,9 +2,13 @@ package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 // Универсальные методы для создания контактов
@@ -30,12 +34,12 @@ public class ContactHelper extends BaseHelper {
 
   // Заполняет форму контактов
   public void fillContactForm(ContactData contactData, boolean creation) {
-    type(By.name("firstname"),contactData.getFirstName());
-    type(By.name("middlename"),contactData.getMiddleName());
-    type(By.name("lastname"),contactData.getLastName());
-    type(By.name("address"),contactData.getAddress());
-    type(By.name("mobile"),contactData.getMobile());
-    type(By.name("email"),contactData.getEmail());
+    type(By.name("firstname"), contactData.getFirstName());
+    type(By.name("middlename"), contactData.getMiddleName());
+    type(By.name("lastname"), contactData.getLastName());
+    type(By.name("address"), contactData.getAddress());
+    type(By.name("mobile"), contactData.getMobile());
+    type(By.name("email"), contactData.getEmail());
 
     //проверяем тип формы и в зависимости от типа заполняем поле
     //если для формы Модификации контакта вдруг поле найдено, то выводим ошибку
@@ -46,11 +50,13 @@ public class ContactHelper extends BaseHelper {
     }
   }
 
-  public void chooseContact() {click(By.name("selected[]"));
+  public void chooseContact() {
+    click(By.name("selected[]"));
   }
 
   // Клик по кнопке Update на странице редактирования контакта
-  public void submitContactModification() {click(By.name("update"));
+  public void submitContactModification() {
+    click(By.name("update"));
   }
 
   public void deleteContact() {
@@ -71,4 +77,17 @@ public class ContactHelper extends BaseHelper {
   public int getContactCount() {
     return wd.findElements(By.name("selected[]")).size();
   }
+
+  public List<ContactData> getContactList() {
+    List<ContactData> contacts = new ArrayList<>();
+    List<WebElement> elements = wd.findElements(By.cssSelector("tr.entry"));
+    for (WebElement element : elements) {
+      String lastName = element.getText();
+      String firstName = element.getText();
+      ContactData contact = new ContactData(firstName, null, lastName, null, null, null, null);
+      contacts.add(contact);
+    }
+    return contacts;
+  }
 }
+

@@ -56,12 +56,7 @@ public class GroupHelper extends BaseHelper {
       return isElementPresent(By.name("selected[]"));
   }
 
-  public int getGroupCount() {
-    return wd.findElements(By.name("selected[]")).size();
-  }
-
-  // Формируем список(коллекцию) элементов Групп типа GroupData
-
+  // Метод формирует список(коллекцию) элементов Групп типа GroupData
   public List<GroupData> getGroupList() {
     List<GroupData> groups = new ArrayList<>();
 

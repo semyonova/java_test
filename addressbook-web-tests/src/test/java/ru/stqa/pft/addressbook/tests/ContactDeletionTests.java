@@ -12,6 +12,7 @@ public class ContactDeletionTests extends BaseTest {
       app.getNavigationHelper().gotoAddNewContact();
       app.getContactHelper().CreateContact(new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "test1"), true);
     }
+
     app.getContactHelper().chooseContact();
     app.getContactHelper().deleteContact();
     app.getNavigationHelper().goToHomePage();
