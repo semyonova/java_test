@@ -2,7 +2,11 @@ package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.GroupData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupHelper extends BaseHelper {
 
@@ -54,5 +58,23 @@ public class GroupHelper extends BaseHelper {
 
   public int getGroupCount() {
     return wd.findElements(By.name("selected[]")).size();
+  }
+
+  // Формируем список(коллекцию) элементов Групп типа GroupData
+
+  public List<GroupData> getGroupList() {
+    List<GroupData> groups = new ArrayList<>();
+
+    // Находим элементы на странице, заносим в список
+    List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
+
+    // Добавляем элементы, найденные выше, в коллекцию элементов групп
+    for (WebElement element: elements) {
+      String name = element.getText();
+      GroupData group = new GroupData(name, null, null);
+      groups.add(group);
+    }
+    return groups;
+
   }
 }
