@@ -13,13 +13,13 @@ public class GroupModificationTests extends BaseTest {
     if (! app.getGroupHelper().isThereGroup()) {
       app.getGroupHelper().CreateGroup(new GroupData("test1", null, null));
     }
-    app.getGroupHelper().selectGroup();
+    app.getGroupHelper().selectGroup(beforeGroup - 1);
     app.getGroupHelper().initGroupModification();
-    app.getGroupHelper().fillGroupForm(new GroupData("testedit", "test1", "test2"));
+    app.getGroupHelper().fillGroupForm(new GroupData("1", "test1", "test2"));
     app.getGroupHelper().submitGroupModification();
     app.getGroupHelper().returnToGroupPage();
     int afterGroup = app.getGroupHelper().getGroupCount();
-    //Проверяем количство групп до и после выполнения теста
+    //Проверяем количeство групп до и после выполнения теста
     Assert.assertEquals(beforeGroup, afterGroup);
   }
 
