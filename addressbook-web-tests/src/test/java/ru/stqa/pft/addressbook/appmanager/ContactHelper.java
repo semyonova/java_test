@@ -80,10 +80,12 @@ public class ContactHelper extends BaseHelper {
 
   public List<ContactData> getContactList() {
     List<ContactData> contacts = new ArrayList<>();
-    List<WebElement> elements = wd.findElements(By.cssSelector("tr.entry"));
+    List<WebElement> elements = wd.findElements(By.name("entry"));
+    System.out.print(wd.findElement(By.name("entry")));
     for (WebElement element : elements) {
       String lastName = element.getText();
       String firstName = element.getText();
+      System.out.println(element.getText());
       ContactData contact = new ContactData(firstName, null, lastName, null, null, null, null);
       contacts.add(contact);
     }
