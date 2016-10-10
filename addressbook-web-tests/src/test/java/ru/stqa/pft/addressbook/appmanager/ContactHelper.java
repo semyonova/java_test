@@ -50,8 +50,8 @@ public class ContactHelper extends BaseHelper {
     }
   }
 
-  public void chooseContact() {
-    click(By.name("selected[]"));
+  public void chooseContact(int index) {
+    wd.findElements(By.name("selected[]")).get(index).click();
   }
 
   // Клик по кнопке Update на странице редактирования контакта
