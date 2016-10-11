@@ -4,6 +4,21 @@ public class GroupData {
   private final String name;
   private final String header;
   private final String footer;
+  private final String id;
+
+  public GroupData(String name, String header, String footer, String id) {
+    this.name = name;
+    this.header = header;
+    this.footer = footer;
+    this.id = id;
+  }
+
+  public GroupData(String name, String header, String footer) {
+    this.name = name;
+    this.header = header;
+    this.footer = footer;
+    this.id = null;
+  }
 
   @Override
   public boolean equals(Object o) {
@@ -12,20 +27,16 @@ public class GroupData {
 
     GroupData groupData = (GroupData) o;
 
-    return name != null ? name.equals(groupData.name) : groupData.name == null;
+    if (name != null ? !name.equals(groupData.name) : groupData.name != null) return false;
+    return id != null ? id.equals(groupData.id) : groupData.id == null;
 
   }
 
   @Override
   public int hashCode() {
-    return name != null ? name.hashCode() : 0;
-  }
-
-  public GroupData(String name, String header, String footer) {
-    this.name = name;
-    this.header = header;
-
-    this.footer = footer;
+    int result = name != null ? name.hashCode() : 0;
+    result = 31 * result + (id != null ? id.hashCode() : 0);
+    return result;
   }
 
   public String getName() {
@@ -38,5 +49,9 @@ public class GroupData {
 
   public String getFooter() {
     return footer;
+  }
+
+  public String getId() {
+    return id;
   }
 }

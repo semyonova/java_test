@@ -66,7 +66,8 @@ public class GroupHelper extends BaseHelper {
     // Добавляем элементы, найденные выше, в коллекцию элементов групп
     for (WebElement element: elements) {
       String name = element.getText();
-      GroupData group = new GroupData(name, null, null);
+      String id = element.findElement(By.tagName("input")).getAttribute("value");
+      GroupData group = new GroupData(name, null, null, id);
       groups.add(group);
     }
     return groups;
