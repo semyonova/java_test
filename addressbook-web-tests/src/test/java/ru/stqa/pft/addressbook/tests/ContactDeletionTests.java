@@ -18,12 +18,14 @@ public class ContactDeletionTests extends BaseTest {
       app.getContactHelper().createContact(new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "test1"));
     }
 
+    //Формириуем список контактов ДО теста
     List<ContactData> beforeContact = app.getContactHelper().getContactList();
 
     //Удаляем последний в списке контакт
     app.getContactHelper().deleteContactByIndex(beforeContact.size() - 1);
     app.getNavigationHelper().goToHomePage();
 
+    //Формириуем список контактов ПОСЛЕ теста
     List<ContactData> afterContact = app.getContactHelper().getContactList();
 
     //Проверяем количeство контактов до и после выполнения теста

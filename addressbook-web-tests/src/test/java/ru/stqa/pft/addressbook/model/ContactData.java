@@ -1,6 +1,7 @@
 package ru.stqa.pft.addressbook.model;
 
 public class ContactData {
+  int id;
   private String firstName;
   private String middleName;
   private String lastName;
@@ -9,7 +10,9 @@ public class ContactData {
   private String email;
   private String group;
 
-  public ContactData(String firstName, String middleName, String lastName, String address, String mobile, String email, String group) {
+
+  public ContactData(int id, String firstName, String middleName, String lastName, String address, String mobile, String email, String group) {
+    this.id = id;
     this.firstName = firstName;
     this.middleName = middleName;
     this.lastName = lastName;
@@ -17,6 +20,19 @@ public class ContactData {
     this.mobile = mobile;
     this.email = email;
     this.group = group;
+
+  }
+
+  public ContactData(String firstName, String middleName, String lastName, String address, String mobile, String email, String group) {
+    this.id = 0;
+    this.firstName = firstName;
+    this.middleName = middleName;
+    this.lastName = lastName;
+    this.address = address;
+    this.mobile = mobile;
+    this.email = email;
+    this.group = group;
+
   }
 
   public String getFirstName() {
@@ -47,6 +63,10 @@ public class ContactData {
     return group;
   }
 
+  public int getId() {
+    return id;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -55,8 +75,7 @@ public class ContactData {
     ContactData that = (ContactData) o;
 
     if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
-    if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
-    return email != null ? email.equals(that.email) : that.email == null;
+    return lastName != null ? lastName.equals(that.lastName) : that.lastName == null;
 
   }
 
@@ -64,7 +83,6 @@ public class ContactData {
   public int hashCode() {
     int result = firstName != null ? firstName.hashCode() : 0;
     result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-    result = 31 * result + (email != null ? email.hashCode() : 0);
     return result;
   }
 }
