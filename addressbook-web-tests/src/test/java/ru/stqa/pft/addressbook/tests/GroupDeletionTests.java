@@ -17,9 +17,11 @@ public class GroupDeletionTests extends BaseTest {
         }
 
         List<GroupData> beforeGroup = app.getGroupHelper().getGroupList();
-        app.getGroupHelper().selectGroup(beforeGroup.size() - 1);
-        app.getGroupHelper().deleteGroup();
+
+        //Удаляем группу по индексу
+        app.getGroupHelper().deleteGroupByIndex(beforeGroup.size() - 1);
         app.getGroupHelper().returnToGroupPage();
+
         List<GroupData> afterGroup = app.getGroupHelper().getGroupList();
 
         //Проверяем количeство групп до и после выполнения теста

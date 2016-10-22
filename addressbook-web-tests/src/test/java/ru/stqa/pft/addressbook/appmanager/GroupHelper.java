@@ -40,6 +40,11 @@ public class GroupHelper extends BaseHelper {
     wd.findElements(By.name("selected[]")).get(index).click();
   }
 
+  public void deleteGroupByIndex(int index) {
+    selectGroup(index);
+    deleteGroup();
+  }
+
   public void initGroupModification() { click(By.name("edit"));}
 
   public void submitGroupModification() {click(By.name("update"));
