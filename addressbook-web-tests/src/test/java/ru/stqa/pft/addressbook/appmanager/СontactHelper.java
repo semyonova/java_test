@@ -89,6 +89,7 @@ public class СontactHelper extends BaseHelper {
     return wd.findElements(By.name("selected[]")).size();
   }
 
+  //Формирует список(массив) конктактов с текущей страницы
   public List<ContactData> getContactList() {
     List<ContactData> contacts = new ArrayList<>();
     List<WebElement> elements = wd.findElements(By.name("entry"));
