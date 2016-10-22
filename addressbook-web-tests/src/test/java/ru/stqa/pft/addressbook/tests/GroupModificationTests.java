@@ -14,7 +14,7 @@ public class GroupModificationTests extends BaseTest {
     app.getNavigationHelper().gotoGroupPage();
 
     if (! app.getGroupHelper().isThereGroup()) {
-      app.getGroupHelper().CreateGroup(new GroupData("test1", null, null));
+      app.getGroupHelper().createGroup(new GroupData("test1", null, null));
     }
 
     //Формируем список(массив) из элементов групп До теста

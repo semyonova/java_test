@@ -12,9 +12,9 @@ import java.util.List;
 
 
 // Универсальные методы для создания контактов
-public class ContactHelper extends BaseHelper {
+public class СontactHelper extends BaseHelper {
 
-  public ContactHelper(WebDriver wd) {
+  public СontactHelper(WebDriver wd) {
     super(wd);
   }
 
@@ -64,8 +64,14 @@ public class ContactHelper extends BaseHelper {
     wd.switchTo().alert().accept();
   }
 
-  public void CreateContact(ContactData contactData, boolean creation) {
-    fillContactForm(contactData, creation);
+  //Удаляет контакт по указанному индексу
+  public void deleteContactByIndex(int index) {
+    chooseContact(index);
+    deleteContact();
+  }
+
+  public void createContact(ContactData contactData) {
+    fillContactForm(contactData, true);
     submitContact();
     returnToHomePage();
   }
@@ -91,5 +97,7 @@ public class ContactHelper extends BaseHelper {
     }
     return contacts;
   }
+
+
 }
 

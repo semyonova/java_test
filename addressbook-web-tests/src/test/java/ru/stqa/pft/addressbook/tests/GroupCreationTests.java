@@ -17,7 +17,7 @@ public class GroupCreationTests extends BaseTest {
     //Формируем список(массив) из элементов групп До теста
     List<GroupData> beforeGroup = app.getGroupHelper().getGroupList();
     GroupData group = new GroupData("test2", null, null);
-    app.getGroupHelper().CreateGroup(group);
+    app.getGroupHelper().createGroup(group);
 
     //Формируем список(массив) из элементов групп ПОСЛЕ теста
     List<GroupData> afterGroup = app.getGroupHelper().getGroupList();
