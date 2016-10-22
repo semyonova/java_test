@@ -27,6 +27,9 @@ public class BaseHelper {
       }
     }
   }
+  protected String getText(By locator) {
+    return wd.findElement(locator).getText();
+  }
 
   public boolean isAlertPresent() {
     try {

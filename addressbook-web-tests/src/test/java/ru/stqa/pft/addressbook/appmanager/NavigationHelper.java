@@ -11,7 +11,7 @@ public class NavigationHelper extends BaseHelper {
 
   public void gotoGroupPage() {
     if (isElementPresent(By.tagName("h1"))
-            && wd.findElement(By.tagName("h1")).getText().equals("Groups")
+            && getText(By.tagName("h1")).equals("Groups")
             && isElementPresent(By.name("new"))) {
       return;
     }
@@ -20,7 +20,7 @@ public class NavigationHelper extends BaseHelper {
 
   public void gotoAddNewContact() {
     if (isElementPresent(By.tagName("h1"))
-            && wd.findElement(By.tagName("h1")).getText().equals("Edit / add address book entry")) {
+            && getText(By.tagName("h1")).equals("Edit / add address book entry")) {
       return;
     }
     click(By.linkText("add new"));

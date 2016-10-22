@@ -10,7 +10,6 @@ import ru.stqa.pft.addressbook.model.ContactData;
 import java.util.ArrayList;
 import java.util.List;
 
-
 // Универсальные методы для создания контактов
 public class СontactHelper extends BaseHelper {
 
@@ -30,6 +29,12 @@ public class СontactHelper extends BaseHelper {
   // Клик по кнопке Enter на странице добавления Контакта
   public void submitContact() {
     click(By.name("submit"));
+  }
+
+  // Модифицирует контакт по указанному индексу (метод в процессе реализации)
+  public void modifyContact(int indexOfOldContact, ContactData contact){
+    chooseContact(indexOfOldContact);
+
   }
 
   // Заполняет форму контактов
