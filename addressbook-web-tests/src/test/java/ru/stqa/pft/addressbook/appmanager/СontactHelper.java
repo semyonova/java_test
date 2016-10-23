@@ -106,7 +106,8 @@ public class СontactHelper extends BaseHelper {
       System.out.println(lastName);
       String firstName = element.findElement(By.xpath(".//td[3]")).getText();
       System.out.println(firstName);
-      ContactData contact = new ContactData(firstName, null, lastName, null, null, null, null);
+      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
+      ContactData contact = new ContactData(id, firstName, null, lastName, null, null, null, null);
       contacts.add(contact);
     }
     return contacts;

@@ -16,6 +16,7 @@ public class ContactCreationTests extends BaseTest {
     //Формируем список(массив) из элементов групп До теста
     List<ContactData> beforeContact = app.getContactHelper().getContactList();
 
+    //Создаём контакт с нужными данными
     app.getNavigationHelper().gotoAddNewContact();
     ContactData contact = new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "1");
     app.getContactHelper().createContact(contact);
@@ -33,7 +34,6 @@ public class ContactCreationTests extends BaseTest {
     Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
     beforeContact.sort(byId);
     afterContact.sort(byId);
-
 
     //Сравниваем списки контактов до и после выполнения теста
     Assert.assertEquals(beforeContact, afterContact);
