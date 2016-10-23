@@ -23,18 +23,22 @@ public class СontactHelper extends BaseHelper {
 
   // Редактирование контакта
   public void editContact() {
-    click(By.xpath("//table[@id='maintable']/tbody//td[8]/a/img"));
+    click(By.xpath("//table[@id='maintable']/tbody//tr[4]/td[8]/a/img"));
+  }
+
+  // Редактирование контакта по указанному индексу
+  public void modifyContactByIndex (int index){
+    wd.findElements(By.xpath("//table[@id='maintable']/tbody//td[8]/a/img")).get(index).click();
+  }
+
+  // Присваивает передаваемому контакту старый индекс, метод в процессе реализации
+  public void modifyContact (int indexOfOldContact, ContactData contact){
+    wd.findElements(By.xpath("//table[@id='maintable']/tbody//td[8]/a/img")).get(indexOfOldContact).click();
   }
 
   // Клик по кнопке Enter на странице добавления Контакта
   public void submitContact() {
     click(By.name("submit"));
-  }
-
-  // Модифицирует контакт по указанному индексу (метод в процессе реализации)
-  public void modifyContact(int indexOfOldContact, ContactData contact){
-    chooseContact(indexOfOldContact);
-
   }
 
   // Заполняет форму контактов
@@ -92,12 +96,20 @@ public class СontactHelper extends BaseHelper {
   //Формирует список(массив) конктактов с текущей страницы
   public List<ContactData> getContactList() {
     List<ContactData> contacts = new ArrayList<>();
-    List<WebElement> elements = wd.findElements(By.name("entry"));
-    System.out.print(wd.findElement(By.name("entry")));
+
+    // Находим элементы на странице, заносим в список
+    List<WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
+
+    for(WebElement element : elements) {
+      System.out.println(element);
+    }
+
+    //Записываем веб-элементы в созданный ранее список(массив)
     for (WebElement element : elements) {
-      String lastName = element.findElement(By.xpath("//tr[@name='entry']/td[2]")).getText();
-      String firstName = element.findElement(By.xpath("//tr[@name='entry']/td[3]")).getText();
+      String lastName = element.findElement(By.xpath("//td[2]")).getText();
       System.out.println(lastName);
+      String firstName = element.findElement(By.xpath("//td[3]")).getText();
+      System.out.println(firstName);
       ContactData contact = new ContactData(firstName, null, lastName, null, null, null, null);
       contacts.add(contact);
     }

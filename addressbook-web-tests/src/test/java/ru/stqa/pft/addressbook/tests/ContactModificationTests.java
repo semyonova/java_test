@@ -22,13 +22,18 @@ public class ContactModificationTests extends BaseTest {
     //Формириуем список контактов ДО теста
     List<ContactData> beforeContact = app.getContactHelper().getContactList();
 
-    app.getContactHelper().editContact();
-    app.getContactHelper().fillContactForm(new ContactData("testname1", "testmiddlename", "testLastname1", "testAddress", "111111", "test@test.ru", null), false);
+    app.getContactHelper().modifyContactByIndex(beforeContact.size() - 1);
+    ContactData contact = new ContactData(beforeContact.get(beforeContact.size() - 1).getId(),"old", "testmiddlename", "testLastname6", "testAddress", "00000", "test@test.ru", null);
+    app.getContactHelper().fillContactForm(contact, false);
     app.getContactHelper().submitContactModification();
     app.getContactHelper().returnToHomePage();
 
     //Формириуем список контактов ПОСЛЕ теста
     List<ContactData> afterContact = app.getContactHelper().getContactList();
+
+    //Удаляем объект, который редактировали и добавляем тот же объект с отредактированными данными (id сохраняем)
+    beforeContact.remove(beforeContact.size() - 1);
+    beforeContact.add(contact);
 
     //Упорядочиваем списки по id перед сравнением
     Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
@@ -37,5 +42,12 @@ public class ContactModificationTests extends BaseTest {
 
     // Сравниваем списки контактов до и после выполнения теста
     Assert.assertEquals(beforeContact, afterContact);
+  }
+
+  // Тест для тестов, нужен для быстрой отладки
+  @Test
+  public void testContactModification1() {
+    app.getNavigationHelper().goToHomePage();
+    app.getContactHelper(). getContactList();
   }
 }

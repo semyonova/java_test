@@ -42,7 +42,7 @@ public class GroupModificationTests extends BaseTest {
     beforeGroup.sort(byId);
     afterGroup.sort(byId);
 
-    // Проверяем элементы множества до и после выполнения теста
+    // Проверяем элементы списков до и после выполнения теста
     Assert.assertEquals(beforeGroup, afterGroup);
   }
 
