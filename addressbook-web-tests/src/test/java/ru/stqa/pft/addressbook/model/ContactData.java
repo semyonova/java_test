@@ -21,6 +21,7 @@ public class ContactData {
     this.email = email;
     this.group = group;
 
+
   }
 
   public ContactData(String firstName, String middleName, String lastName, String address, String mobile, String email, String group) {
@@ -65,6 +66,10 @@ public class ContactData {
 
   public int getId() {
     return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   @Override

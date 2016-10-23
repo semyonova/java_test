@@ -32,8 +32,8 @@ public class СontactHelper extends BaseHelper {
   }
 
   // Присваивает передаваемому контакту старый индекс, метод в процессе реализации
-  public void modifyContact (int indexOfOldContact, ContactData contact){
-    wd.findElements(By.xpath("//table[@id='maintable']/tbody//td[8]/a/img")).get(indexOfOldContact).click();
+  public void modifyContact (int idOfOldContact, ContactData contact){
+    contact.setId(idOfOldContact);
   }
 
   // Клик по кнопке Enter на странице добавления Контакта
@@ -98,24 +98,19 @@ public class СontactHelper extends BaseHelper {
     List<ContactData> contacts = new ArrayList<>();
 
     // Находим элементы на странице, заносим в список
-    List<WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
-
-    for(WebElement element : elements) {
-      System.out.println(element);
-    }
+    List<WebElement> elements = wd.findElements(By.xpath(".//tr[@name='entry']"));
 
     //Записываем веб-элементы в созданный ранее список(массив)
     for (WebElement element : elements) {
-      String lastName = element.findElement(By.xpath("//td[2]")).getText();
+      String lastName = element.findElement(By.xpath(".//td[2]")).getText();
       System.out.println(lastName);
-      String firstName = element.findElement(By.xpath("//td[3]")).getText();
+      String firstName = element.findElement(By.xpath(".//td[3]")).getText();
       System.out.println(firstName);
       ContactData contact = new ContactData(firstName, null, lastName, null, null, null, null);
       contacts.add(contact);
     }
     return contacts;
   }
-
 
 }
 

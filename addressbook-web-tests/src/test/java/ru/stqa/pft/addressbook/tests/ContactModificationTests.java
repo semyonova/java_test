@@ -31,9 +31,8 @@ public class ContactModificationTests extends BaseTest {
     //Формириуем список контактов ПОСЛЕ теста
     List<ContactData> afterContact = app.getContactHelper().getContactList();
 
-    //Удаляем объект, который редактировали и добавляем тот же объект с отредактированными данными (id сохраняем)
-    beforeContact.remove(beforeContact.size() - 1);
-    beforeContact.add(contact);
+    //Контакту, который редактировали, сохраняем старый id
+    app.getContactHelper().modifyContact(beforeContact.size() - 1, contact);
 
     //Упорядочиваем списки по id перед сравнением
     Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
