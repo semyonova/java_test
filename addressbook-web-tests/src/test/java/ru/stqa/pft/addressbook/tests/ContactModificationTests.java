@@ -42,11 +42,5 @@ public class ContactModificationTests extends BaseTest {
     // Сравниваем списки контактов до и после выполнения теста
     Assert.assertEquals(beforeContact, afterContact);
   }
-
-  // Тест для тестов, нужен для быстрой отладки
-  @Test
-  public void testContactModification1() {
-    app.getNavigationHelper().goToHomePage();
-    app.getContactHelper(). getContactList();
-  }
+  
 }
