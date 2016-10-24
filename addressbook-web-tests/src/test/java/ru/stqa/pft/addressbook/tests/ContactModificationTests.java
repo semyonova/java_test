@@ -23,7 +23,7 @@ public class ContactModificationTests extends BaseTest {
     List<ContactData> beforeContact = app.getContactHelper().getContactList();
 
     app.getContactHelper().modifyContactByIndex(beforeContact.size() - 1);
-    ContactData contact = new ContactData(beforeContact.get(beforeContact.size() - 1).getId(),"old", "testmiddlename", "testLastname6", "testAddress", "00000", "test@test.ru", null);
+    ContactData contact = new ContactData(beforeContact.get(beforeContact.size() - 1).getId(), "carl", "testmiddlename", "testLastname6", "testAddress", "00000", "test@test.ru", null);
     app.getContactHelper().fillContactForm(contact, false);
     app.getContactHelper().submitContactModification();
     app.getContactHelper().returnToHomePage();
@@ -32,7 +32,11 @@ public class ContactModificationTests extends BaseTest {
     List<ContactData> afterContact = app.getContactHelper().getContactList();
 
     //Контакту, который редактировали, сохраняем старый id
-    app.getContactHelper().modifyContact(beforeContact.size() - 1, contact);
+    // app.getContactHelper().modifyContact(beforeContact.size() - 1, contact);
+
+    //Удаляем объект, который редактировали и добавляем тот же объект с отредактированными данными (id сохраняем)
+    beforeContact.remove(beforeContact.size() - 1);
+    beforeContact.add(contact);
 
     //Упорядочиваем списки по id перед сравнением
     Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
