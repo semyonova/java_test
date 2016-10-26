@@ -15,7 +15,7 @@ public class GroupModificationTests extends BaseTest {
     app.goTo().groupPage();
 
     if (app.group().list().size() == 0) {
-      app.group().createGroup(new GroupData("group9", null, null));
+      app.group().createGroup(new GroupData().withName("group9"));
     }
   }
 
@@ -27,7 +27,7 @@ public class GroupModificationTests extends BaseTest {
 
     //Изменяем объект типа GroupData с id последнего элемента
     int index = beforeGroup.size() - 1;
-    GroupData group = new GroupData("g3", "t1", "t2", beforeGroup.get(index).getId());
+    GroupData group = new GroupData().withId(beforeGroup.get(index).getId()).withName("g3").withHeader("t1").withFooter("t2");
     app.group().modify(index, group);
 
     //Формируем список(массив) из элементов групп ПОСЛЕ теста

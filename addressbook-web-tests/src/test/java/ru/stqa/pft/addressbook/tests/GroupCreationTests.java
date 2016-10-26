@@ -3,7 +3,6 @@ package ru.stqa.pft.addressbook.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
-
 import java.util.Comparator;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class GroupCreationTests extends BaseTest {
     //Формируем список(массив) из элементов групп До теста
     List<GroupData> beforeGroup = app.group().list();
 
-    GroupData group = new GroupData("test", null, null);
+    GroupData group = new GroupData().withName("test");
     app.group().createGroup(group);
 
     //Формируем список(массив) из элементов групп ПОСЛЕ теста
