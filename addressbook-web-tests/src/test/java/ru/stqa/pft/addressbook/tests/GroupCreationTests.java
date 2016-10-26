@@ -3,8 +3,8 @@ package ru.stqa.pft.addressbook.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
-import java.util.Comparator;
-import java.util.List;
+
+import java.util.Set;
 
 
 public class GroupCreationTests extends BaseTest {
@@ -14,26 +14,21 @@ public class GroupCreationTests extends BaseTest {
     app.goTo().groupPage();
 
     //Формируем список(массив) из элементов групп До теста
-    List<GroupData> beforeGroup = app.group().list();
+    Set<GroupData> beforeGroup = app.group().all();
 
     GroupData group = new GroupData().withName("test");
     app.group().createGroup(group);
 
     //Формируем список(массив) из элементов групп ПОСЛЕ теста
-    List<GroupData> afterGroup = app.group().list();
+    Set<GroupData> afterGroup = app.group().all();
 
     //Проверяем количество групп до и после выполнения теста
     Assert.assertEquals(beforeGroup.size() + 1, afterGroup.size());
 
     //Добавляем элемент в список(массив) ДО
-    beforeGroup.add(group);
+    beforeGroup.add(group.withId(afterGroup.stream().mapToInt((g) -> g.getId()).max().getAsInt()));
 
-    //Упорядочиваем списки по id перед сравнением
-    Comparator<? super GroupData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
-    beforeGroup.sort(byId);
-    afterGroup.sort(byId);
-
-    //Сравниваем списки ДО и ПОСЛЕ
+    //Сравниваем множества ДО и ПОСЛЕ
     Assert.assertEquals(beforeGroup, afterGroup);
 
     //Находим максимальное id в списке ПОСЛЕ
