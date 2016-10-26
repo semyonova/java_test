@@ -19,7 +19,9 @@ public class ContactModificationTests extends BaseTest {
     //Проверяем наличие контактов, если их нет, создаём один
     if (app.contact().list().size() == 0) {
       app.goTo().pageAddNewContact();
-      app.contact().createContact(new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "test1"));
+      app.contact().createContact(new ContactData().withFirstName("testname").
+              withMiddleName("testmiddlename").withLastName("testLastname").
+              withAddress("testAddress").withMobile("555555").withEmail("test@test.ru").withGroup("test1"));
     }
   }
 
@@ -30,9 +32,9 @@ public class ContactModificationTests extends BaseTest {
     List<ContactData> beforeContact = app.contact().list();
 
     int index = beforeContact.size() - 1;
-    ContactData contact = new ContactData(
-            beforeContact.get(index).getId(),
-            "jane", "testmiddlename", "testLastname6", "testAddress", "00000", "test@test.ru", null);
+    ContactData contact = new ContactData().withId(beforeContact.get(index).getId()).
+            withFirstName("jane"). withMiddleName("testmiddlename").withLastName("testLastname6").
+            withAddress("testAddress").withMobile("50654").withEmail("test@test.ru");
     app.contact().modify(index, contact);
 
     //Формириуем список контактов ПОСЛЕ теста

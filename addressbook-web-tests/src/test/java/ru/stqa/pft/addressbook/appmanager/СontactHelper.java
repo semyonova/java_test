@@ -32,9 +32,7 @@ public class СontactHelper extends BaseHelper {
   }
 
   // Присваивает передаваемому контакту старый индекс, метод в процессе реализации
-  public void modifyContactByOldId(int idOfOldContact, ContactData contact){
-    contact.setId(idOfOldContact);
-  }
+  public void modifyContactByOldId(int idOfOldContact, ContactData contact){contact.withId(idOfOldContact);}
 
   // Клик по кнопке Enter на странице добавления Контакта
   public void submitContact() {
@@ -115,8 +113,7 @@ public class СontactHelper extends BaseHelper {
       System.out.println(firstName);
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
       System.out.println(id);
-      ContactData contact = new ContactData(id, firstName, null, lastName, null, null, null, null);
-      contacts.add(contact);
+      contacts.add(new ContactData().withId(id).withFirstName(firstName).withLastName(lastName));
     }
     return contacts;
   }

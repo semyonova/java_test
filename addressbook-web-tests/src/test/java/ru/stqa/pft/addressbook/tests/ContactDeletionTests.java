@@ -16,7 +16,9 @@ public class ContactDeletionTests extends BaseTest {
     //Проверяем наличие контактов, если их нет, создаём один
     if (app.contact().list().size() == 0) {
       app.goTo().pageAddNewContact();
-      app.contact().createContact(new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "test1"));
+      app.contact().createContact(new ContactData().withFirstName("testname").
+              withMiddleName("testmiddlename").withLastName("testLastname").
+              withAddress("testAddress").withMobile("555555").withEmail("test@test.ru").withGroup("test1"));
     }
   }
 

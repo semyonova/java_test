@@ -18,7 +18,9 @@ public class ContactCreationTests extends BaseTest {
 
     //Создаём контакт с нужными данными
     app.goTo().pageAddNewContact();
-    ContactData contact = new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "1");
+    ContactData contact = new ContactData().withFirstName("newname").
+            withMiddleName("testmiddlename").withLastName("testLastname").
+            withAddress("testAddress").withMobile("2222").withEmail("test@test.ru").withGroup("1");
     app.contact().createContact(contact);
 
     //Формируем список(массив) из элементов групп После теста
