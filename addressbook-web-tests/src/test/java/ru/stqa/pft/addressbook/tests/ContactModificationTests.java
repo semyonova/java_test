@@ -11,11 +11,11 @@ public class ContactModificationTests extends BaseTest {
 
   @Test
   public void testContactModification(){
-    app.getNavigationHelper().goToHomePage();
+    app.goTo().goToHomePage();
 
     //Проверяем наличи контактов, если их нет, создаём один
     if (! app.getContactHelper().isThereContact()) {
-      app.getNavigationHelper().gotoAddNewContact();
+      app.goTo().gotoAddNewContact();
       app.getContactHelper().createContact(new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "test1"));
     }
 

@@ -1,6 +1,7 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 
@@ -9,32 +10,31 @@ import java.util.List;
 
 public class GroupModificationTests extends BaseTest {
 
+  @BeforeMethod
+  public void ensurePrecondition() {
+    app.goTo().groupPage();
+
+    if (app.group().list().size() == 0) {
+      app.group().createGroup(new GroupData("group9", null, null));
+    }
+  }
+
   @Test
   public void testGroupModification() {
-    app.getNavigationHelper().gotoGroupPage();
-
-    if (! app.getGroupHelper().isThereGroup()) {
-      app.getGroupHelper().createGroup(new GroupData("test1", null, null));
-    }
 
     //Формируем список(массив) из элементов групп До теста
-    List<GroupData> beforeGroup = app.getGroupHelper().getGroupList();
+    List<GroupData> beforeGroup = app.group().list();
 
-    //Выбираем последний элемент в списке на странице
-    app.getGroupHelper().selectGroup(beforeGroup.size() - 1);
-
-    app.getGroupHelper().initGroupModification();
-    //Создаём объект типа GroupData с id последнего элемента (получаем последний элемент, получаем его id)
-    GroupData group = new GroupData("1", "test1", "test2", beforeGroup.get(beforeGroup.size() - 1).getId());
-    app.getGroupHelper().fillGroupForm(group);
-    app.getGroupHelper().submitGroupModification();
-    app.getGroupHelper().returnToGroupPage();
+    //Изменяем объект типа GroupData с id последнего элемента
+    int index = beforeGroup.size() - 1;
+    GroupData group = new GroupData("g3", "t1", "t2", beforeGroup.get(index).getId());
+    app.group().modify(index, group);
 
     //Формируем список(массив) из элементов групп ПОСЛЕ теста
-    List<GroupData> afterGroup = app.getGroupHelper().getGroupList();
+    List<GroupData> afterGroup = app.group().list();
 
     //Удаляем объект, который редактировали и добавляем тот же объект с отредактированными данными (id сохраняем)
-    beforeGroup.remove(beforeGroup.size() - 1);
+    beforeGroup.remove(index);
     beforeGroup.add(group);
 
     //Упорядочиваем списки по id перед сравнением

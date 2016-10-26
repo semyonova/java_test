@@ -10,11 +10,11 @@ public class ContactDeletionTests extends BaseTest {
 
   @Test
   public void testContactDeletion() {
-    app.getNavigationHelper().goToHomePage();
+    app.goTo().goToHomePage();
 
     //Если нет ни одного контакта, то создаём новый
     if (! app.getContactHelper().isThereContact()) {
-      app.getNavigationHelper().gotoAddNewContact();
+      app.goTo().gotoAddNewContact();
       app.getContactHelper().createContact(new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "test1"));
     }
 
@@ -23,7 +23,7 @@ public class ContactDeletionTests extends BaseTest {
 
     //Удаляем последний в списке контакт
     app.getContactHelper().deleteContactByIndex(beforeContact.size() - 1);
-    app.getNavigationHelper().goToHomePage();
+    app.goTo().goToHomePage();
 
     //Формириуем список контактов ПОСЛЕ теста
     List<ContactData> afterContact = app.getContactHelper().getContactList();

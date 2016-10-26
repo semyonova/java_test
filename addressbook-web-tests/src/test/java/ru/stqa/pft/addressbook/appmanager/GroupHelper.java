@@ -57,12 +57,20 @@ public class GroupHelper extends BaseHelper {
     returnToGroupPage();
   }
 
+  public void modify(int index, GroupData group) {
+    selectGroup(index);
+    initGroupModification();
+    fillGroupForm(group);
+    submitGroupModification();
+    returnToGroupPage();
+  }
+
   public boolean isThereGroup() {
       return isElementPresent(By.name("selected[]"));
   }
 
   // Метод формирует список(коллекцию) элементов Групп типа GroupData
-  public List<GroupData> getGroupList() {
+  public List<GroupData> list() {
     List<GroupData> groups = new ArrayList<>();
 
     // Находим элементы на странице, заносим в список

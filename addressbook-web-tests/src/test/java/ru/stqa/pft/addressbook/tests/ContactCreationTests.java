@@ -11,13 +11,13 @@ public class ContactCreationTests extends BaseTest {
 
   @Test
   public void testContactCreation() {
-    app.getNavigationHelper().goToHomePage();
+    app.goTo().goToHomePage();
 
     //Формируем список(массив) из элементов групп До теста
     List<ContactData> beforeContact = app.getContactHelper().getContactList();
 
     //Создаём контакт с нужными данными
-    app.getNavigationHelper().gotoAddNewContact();
+    app.goTo().gotoAddNewContact();
     ContactData contact = new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "1");
     app.getContactHelper().createContact(contact);
 
