@@ -5,7 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 
-import java.util.List;
+import java.util.Set;
 
 public class GroupDeletionTests extends BaseTest {
 
@@ -21,20 +21,16 @@ public class GroupDeletionTests extends BaseTest {
     @Test
     public void TestsGroupDeletion() {
 
-        List<GroupData> beforeGroup = app.group().list();
-        int index = beforeGroup.size() - 1;
-
-        //Удаляем группу по индексу
-        app.group().deleteGroupByIndex(index);
-        app.group().returnToGroupPage();
-
-        List<GroupData> afterGroup = app.group().list();
+        Set<GroupData> beforeGroup = app.group().all();
+        GroupData deletedGroup = beforeGroup.iterator().next();
+        app.group().delete(deletedGroup);
+        Set<GroupData> afterGroup = app.group().all();
 
         //Проверяем количeство групп до и после выполнения теста
         Assert.assertEquals(beforeGroup.size() - 1, afterGroup.size());
 
         // Сравниваем списки групп до и после выполнения теста
-        beforeGroup.remove(index);
+        beforeGroup.remove(deletedGroup);
         Assert.assertEquals(beforeGroup, afterGroup);
     }
 }
