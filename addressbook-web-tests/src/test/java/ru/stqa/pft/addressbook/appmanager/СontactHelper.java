@@ -32,7 +32,7 @@ public class СontactHelper extends BaseHelper {
   }
 
   // Присваивает передаваемому контакту старый индекс, метод в процессе реализации
-  public void modifyContact (int idOfOldContact, ContactData contact){
+  public void modifyContactByOldId(int idOfOldContact, ContactData contact){
     contact.setId(idOfOldContact);
   }
 
@@ -85,6 +85,13 @@ public class СontactHelper extends BaseHelper {
     returnToHomePage();
   }
 
+  public void modify(int index, ContactData contact) {
+    modifyContactByIndex(index);
+    fillContactForm(contact, false);
+    submitContactModification();
+    returnToHomePage();
+  }
+
   public boolean isThereContact() {
     return isElementPresent(By.name("selected[]"));
   }
@@ -94,7 +101,7 @@ public class СontactHelper extends BaseHelper {
   }
 
   //Формирует список(массив) конктактов с текущей страницы
-  public List<ContactData> getContactList() {
+  public List<ContactData> list() {
     List<ContactData> contacts = new ArrayList<>();
 
     // Находим элементы на странице, заносим в список

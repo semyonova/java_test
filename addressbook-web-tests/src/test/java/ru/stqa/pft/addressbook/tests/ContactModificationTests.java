@@ -1,6 +1,7 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
@@ -9,33 +10,39 @@ import java.util.List;
 
 public class ContactModificationTests extends BaseTest {
 
+
+  @BeforeMethod
+
+  public void ensurePrecondition() {
+    app.goTo().HomePage();
+
+    //Проверяем наличие контактов, если их нет, создаём один
+    if (app.contact().list().size() == 0) {
+      app.goTo().pageAddNewContact();
+      app.contact().createContact(new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "test1"));
+    }
+  }
+
   @Test
   public void testContactModification(){
-    app.goTo().goToHomePage();
-
-    //Проверяем наличи контактов, если их нет, создаём один
-    if (! app.getContactHelper().isThereContact()) {
-      app.goTo().gotoAddNewContact();
-      app.getContactHelper().createContact(new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "test1"));
-    }
 
     //Формириуем список контактов ДО теста
-    List<ContactData> beforeContact = app.getContactHelper().getContactList();
+    List<ContactData> beforeContact = app.contact().list();
 
-    app.getContactHelper().modifyContactByIndex(beforeContact.size() - 1);
-    ContactData contact = new ContactData(beforeContact.get(beforeContact.size() - 1).getId(), "carl", "testmiddlename", "testLastname6", "testAddress", "00000", "test@test.ru", null);
-    app.getContactHelper().fillContactForm(contact, false);
-    app.getContactHelper().submitContactModification();
-    app.getContactHelper().returnToHomePage();
+    int index = beforeContact.size() - 1;
+    ContactData contact = new ContactData(
+            beforeContact.get(index).getId(),
+            "jane", "testmiddlename", "testLastname6", "testAddress", "00000", "test@test.ru", null);
+    app.contact().modify(index, contact);
 
     //Формириуем список контактов ПОСЛЕ теста
-    List<ContactData> afterContact = app.getContactHelper().getContactList();
+    List<ContactData> afterContact = app.contact().list();
 
     //Контакту, который редактировали, сохраняем старый id
-    // app.getContactHelper().modifyContact(beforeContact.size() - 1, contact);
+    //app.contact().modifyContactByOldId(index, contact);
 
     //Удаляем объект, который редактировали и добавляем тот же объект с отредактированными данными (id сохраняем)
-    beforeContact.remove(beforeContact.size() - 1);
+    beforeContact.remove(index);
     beforeContact.add(contact);
 
     //Упорядочиваем списки по id перед сравнением
@@ -46,5 +53,7 @@ public class ContactModificationTests extends BaseTest {
     // Сравниваем списки контактов до и после выполнения теста
     Assert.assertEquals(beforeContact, afterContact);
   }
-  
+
+
+
 }

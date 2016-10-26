@@ -48,7 +48,7 @@ public class ApplicationManager {
     return groupHelper;
   }
 
-  public СontactHelper getContactHelper() {
+  public СontactHelper contact() {
     return contactHelper;
   }
 

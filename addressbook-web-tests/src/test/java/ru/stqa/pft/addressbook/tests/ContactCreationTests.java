@@ -11,18 +11,18 @@ public class ContactCreationTests extends BaseTest {
 
   @Test
   public void testContactCreation() {
-    app.goTo().goToHomePage();
+    app.goTo().HomePage();
 
     //Формируем список(массив) из элементов групп До теста
-    List<ContactData> beforeContact = app.getContactHelper().getContactList();
+    List<ContactData> beforeContact = app.contact().list();
 
     //Создаём контакт с нужными данными
-    app.goTo().gotoAddNewContact();
+    app.goTo().pageAddNewContact();
     ContactData contact = new ContactData("testname", "testmiddlename", "testLastname", "testAddress", "555555", "test@test.ru", "1");
-    app.getContactHelper().createContact(contact);
+    app.contact().createContact(contact);
 
     //Формируем список(массив) из элементов групп После теста
-    List<ContactData> afterContact = app.getContactHelper().getContactList();
+    List<ContactData> afterContact = app.contact().list();
 
     //Сравниваем размер списков контактов до и после выполнения теста
     Assert.assertEquals(beforeContact.size() + 1, afterContact.size());

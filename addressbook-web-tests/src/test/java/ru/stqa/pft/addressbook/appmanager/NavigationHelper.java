@@ -18,7 +18,7 @@ public class NavigationHelper extends BaseHelper {
     click(By.linkText("groups"));
   }
 
-  public void gotoAddNewContact() {
+  public void pageAddNewContact() {
     if (isElementPresent(By.tagName("h1"))
             && getText(By.tagName("h1")).equals("Edit / add address book entry")) {
       return;
@@ -26,7 +26,7 @@ public class NavigationHelper extends BaseHelper {
     click(By.linkText("add new"));
   }
 
-  public void goToHomePage() {
+  public void HomePage() {
     if (isElementPresent(By.id("maintable"))){
       return;
     }
