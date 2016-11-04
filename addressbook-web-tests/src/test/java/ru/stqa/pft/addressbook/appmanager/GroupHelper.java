@@ -72,7 +72,6 @@ public class GroupHelper extends BaseHelper {
       return isElementPresent(By.name("selected[]"));
   }
 
-
   // Метод формирует множество элементов Групп типа GroupData
   public Set<GroupData> all() {
     Set<GroupData> groups = new HashSet<>();
@@ -89,6 +88,4 @@ public class GroupHelper extends BaseHelper {
     }
     return groups;
   }
-
-
 }

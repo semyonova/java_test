@@ -5,8 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.Set;
 
 public class ContactModificationTests extends BaseTest {
 
@@ -17,7 +16,7 @@ public class ContactModificationTests extends BaseTest {
     app.goTo().HomePage();
 
     //Проверяем наличие контактов, если их нет, создаём один
-    if (app.contact().list().size() == 0) {
+    if (app.contact().all().size() == 0) {
       app.goTo().pageAddNewContact();
       app.contact().createContact(new ContactData().withFirstName("testname").
               withMiddleName("testmiddlename").withLastName("testLastname").
@@ -29,28 +28,23 @@ public class ContactModificationTests extends BaseTest {
   public void testContactModification(){
 
     //Формириуем список контактов ДО теста
-    List<ContactData> beforeContact = app.contact().list();
+    Set<ContactData> beforeContact = app.contact().all();
 
-    int index = beforeContact.size() - 1;
-    ContactData contact = new ContactData().withId(beforeContact.get(index).getId()).
+    ContactData modifiedContact =  beforeContact.iterator().next();
+    ContactData contact = new ContactData().withId(modifiedContact.getId()).
             withFirstName("jane"). withMiddleName("testmiddlename").withLastName("testLastname6").
             withAddress("testAddress").withMobile("50654").withEmail("test@test.ru");
-    app.contact().modify(index, contact);
+    app.contact().modify(contact);
 
     //Формириуем список контактов ПОСЛЕ теста
-    List<ContactData> afterContact = app.contact().list();
+    Set<ContactData> afterContact = app.contact().all();
 
     //Контакту, который редактировали, сохраняем старый id
     //app.contact().modifyContactByOldId(index, contact);
 
     //Удаляем объект, который редактировали и добавляем тот же объект с отредактированными данными (id сохраняем)
-    beforeContact.remove(index);
+    beforeContact.remove(modifiedContact);
     beforeContact.add(contact);
-
-    //Упорядочиваем списки по id перед сравнением
-    Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
-    beforeContact.sort(byId);
-    afterContact.sort(byId);
 
     // Сравниваем списки контактов до и после выполнения теста
     Assert.assertEquals(beforeContact, afterContact);

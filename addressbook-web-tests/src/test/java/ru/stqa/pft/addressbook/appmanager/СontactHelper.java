@@ -7,8 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // Универсальные методы для создания контактов
 public class СontactHelper extends BaseHelper {
@@ -24,11 +25,6 @@ public class СontactHelper extends BaseHelper {
   // Редактирование контакта
   public void editContact() {
     click(By.xpath("//table[@id='maintable']/tbody//tr[4]/td[8]/a/img"));
-  }
-
-  // Редактирование контакта по указанному индексу
-  public void modifyContactByIndex (int index){
-    wd.findElements(By.xpath("//table[@id='maintable']/tbody//td[8]/a/img")).get(index).click();
   }
 
   // Присваивает передаваемому контакту старый индекс, метод в процессе реализации
@@ -61,6 +57,10 @@ public class СontactHelper extends BaseHelper {
     wd.findElements(By.name("selected[]")).get(index).click();
   }
 
+  public void chooseContactById(int id) {
+    wd.findElement(By.cssSelector("input[id ='" + id + "']")).click();
+  }
+
   // Клик по кнопке Update на странице редактирования контакта
   public void submitContactModification() {
     click(By.name("update"));
@@ -77,17 +77,31 @@ public class СontactHelper extends BaseHelper {
     deleteContact();
   }
 
+  public void delete(ContactData deletedContact) {
+    chooseContactById(deletedContact.getId());
+    deleteContact();
+  }
+
   public void createContact(ContactData contactData) {
     fillContactForm(contactData, true);
     submitContact();
     returnToHomePage();
   }
 
-  public void modify(int index, ContactData contact) {
-    modifyContactByIndex(index);
+  public void modify(ContactData contact) {
+    modifyContact(contact.getId());
     fillContactForm(contact, false);
     submitContactModification();
     returnToHomePage();
+  }
+
+  private void modifyContact(int id) {
+    wd.findElement(By.cssSelector("//table[@id='maintable']/tbody//td[8]/a/img")).click();
+  }
+
+  // Редактирование контакта по указанному индексу
+  public void modifyContactByIndex (int index){
+    wd.findElements(By.xpath("//table[@id='maintable']/tbody//td[8]/a/img")).get(index).click();
   }
 
   public boolean isThereContact() {
@@ -98,9 +112,9 @@ public class СontactHelper extends BaseHelper {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  //Формирует список(массив) конктактов с текущей страницы
-  public List<ContactData> list() {
-    List<ContactData> contacts = new ArrayList<>();
+  //Формирует множество конктактов с текущей страницы
+  public Set<ContactData> all() {
+    Set<ContactData> contacts = new HashSet<>();
 
     // Находим элементы на странице, заносим в список
     List<WebElement> elements = wd.findElements(By.xpath(".//tr[@name='entry']"));

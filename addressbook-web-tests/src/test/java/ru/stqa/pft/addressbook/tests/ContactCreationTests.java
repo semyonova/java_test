@@ -4,8 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.Set;
 
 public class ContactCreationTests extends BaseTest {
 
@@ -14,7 +13,7 @@ public class ContactCreationTests extends BaseTest {
     app.goTo().HomePage();
 
     //Формируем список(массив) из элементов групп До теста
-    List<ContactData> beforeContact = app.contact().list();
+    Set<ContactData> beforeContact = app.contact().all();
 
     //Создаём контакт с нужными данными
     app.goTo().pageAddNewContact();
@@ -24,18 +23,13 @@ public class ContactCreationTests extends BaseTest {
     app.contact().createContact(contact);
 
     //Формируем список(массив) из элементов групп После теста
-    List<ContactData> afterContact = app.contact().list();
+    Set<ContactData> afterContact = app.contact().all();
 
     //Сравниваем размер списков контактов до и после выполнения теста
     Assert.assertEquals(beforeContact.size() + 1, afterContact.size());
 
-    //Добаваляем новый контакт в список До
-    beforeContact.add(contact);
-
-    //Упорядочиваем списки по id перед сравнением
-    Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
-    beforeContact.sort(byId);
-    afterContact.sort(byId);
+    //Добаваляем контакт с максимальным идентификатором в список До
+    beforeContact.add(contact.withId(afterContact.stream().mapToInt((c) -> c.getId()).max().getAsInt()));
 
     //Сравниваем списки контактов до и после выполнения теста
     Assert.assertEquals(beforeContact, afterContact);

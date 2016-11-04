@@ -5,7 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.List;
+import java.util.Set;
 
 public class ContactDeletionTests extends BaseTest {
 
@@ -14,7 +14,7 @@ public class ContactDeletionTests extends BaseTest {
     app.goTo().HomePage();
 
     //Проверяем наличие контактов, если их нет, создаём один
-    if (app.contact().list().size() == 0) {
+    if (app.contact().all().size() == 0) {
       app.goTo().pageAddNewContact();
       app.contact().createContact(new ContactData().withFirstName("testname").
               withMiddleName("testmiddlename").withLastName("testLastname").
@@ -26,22 +26,23 @@ public class ContactDeletionTests extends BaseTest {
   public void testContactDeletion() {
 
     //Формириуем список контактов ДО теста
-    List<ContactData> beforeContact = app.contact().list();
+    Set<ContactData> beforeContact = app.contact().all();
 
-    int index = beforeContact.size() - 1;
+    //Выбираем удаляемый контакт
+    ContactData deletedContact = beforeContact.iterator().next();
 
-    //Удаляем последний в списке контакт
-    app.contact().deleteContactByIndex(index);
+    //Удаляем контакт
+    app.contact().delete(deletedContact);
     app.goTo().HomePage();
 
     //Формириуем список контактов ПОСЛЕ теста
-    List<ContactData> afterContact = app.contact().list();
+    Set<ContactData> afterContact = app.contact().all();
 
     //Проверяем количeство контактов до и после выполнения теста
     Assert.assertEquals(beforeContact.size() - 1, afterContact.size());
 
     // Сравниваем списки контактов до и после выполнения теста
-    beforeContact.remove(index);
+    beforeContact.remove(deletedContact);
     Assert.assertEquals(beforeContact, afterContact);
   }
 }
