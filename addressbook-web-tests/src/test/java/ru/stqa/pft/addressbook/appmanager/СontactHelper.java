@@ -53,10 +53,6 @@ public class СontactHelper extends BaseHelper {
     }
   }
 
-  public void chooseContact(int index) {
-    wd.findElements(By.name("selected[]")).get(index).click();
-  }
-
   public void chooseContactById(int id) {
     wd.findElement(By.cssSelector("input[id ='" + id + "']")).click();
   }
@@ -69,12 +65,6 @@ public class СontactHelper extends BaseHelper {
   public void deleteContact() {
     click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
     wd.switchTo().alert().accept();
-  }
-
-  //Удаляет контакт по указанному индексу
-  public void deleteContactByIndex(int index) {
-    chooseContact(index);
-    deleteContact();
   }
 
   public void delete(ContactData deletedContact) {
@@ -96,12 +86,7 @@ public class СontactHelper extends BaseHelper {
   }
 
   private void modifyContact(int id) {
-    wd.findElement(By.cssSelector("//table[@id='maintable']/tbody//td[8]/a/img")).click();
-  }
-
-  // Редактирование контакта по указанному индексу
-  public void modifyContactByIndex (int index){
-    wd.findElements(By.xpath("//table[@id='maintable']/tbody//td[8]/a/img")).get(index).click();
+    wd.findElement(By.xpath("//a[@href='edit.php?id=" + id + "']")).click();
   }
 
   public boolean isThereContact() {
@@ -131,6 +116,5 @@ public class СontactHelper extends BaseHelper {
     }
     return contacts;
   }
-
 }
 

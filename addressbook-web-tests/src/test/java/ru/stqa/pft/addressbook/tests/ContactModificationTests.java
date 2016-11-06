@@ -9,7 +9,6 @@ import java.util.Set;
 
 public class ContactModificationTests extends BaseTest {
 
-
   @BeforeMethod
 
   public void ensurePrecondition() {
@@ -39,10 +38,7 @@ public class ContactModificationTests extends BaseTest {
     //Формириуем список контактов ПОСЛЕ теста
     Set<ContactData> afterContact = app.contact().all();
 
-    //Контакту, который редактировали, сохраняем старый id
-    //app.contact().modifyContactByOldId(index, contact);
-
-    //Удаляем объект, который редактировали и добавляем тот же объект с отредактированными данными (id сохраняем)
+    //Удаляем объект, который редактировали и добавляем тот же объект с отредактированными данными
     beforeContact.remove(modifiedContact);
     beforeContact.add(contact);
 
