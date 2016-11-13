@@ -74,6 +74,10 @@ public class GroupHelper extends BaseHelper {
       return isElementPresent(By.name("selected[]"));
   }
 
+  public int count(){
+    return wd.findElements(By.name("selected[]")).size();
+  }
+
   private Groups groupCache = null;
 
   // Метод формирует множество элементов Групп типа GroupData

@@ -1,5 +1,6 @@
 package ru.stqa.pft.addressbook.tests;
 
+import org.junit.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
@@ -20,11 +21,11 @@ public class GroupCreationTests extends BaseTest {
     GroupData group = new GroupData().withName("test");
     app.group().createGroup(group);
 
+    //Проверяем количeство групп до и после выполнения теста
+    Assert.assertThat(app.group().count(),equalTo(beforeGroup.size() + 1));
+
     //Формируем список(массив) из элементов групп ПОСЛЕ теста
     Groups afterGroup = app.group().all();
-
-    //Проверяем количество групп до и после выполнения теста
-    assertThat(afterGroup.size(), equalTo(beforeGroup.size() + 1));
 
     //Сравниваем множества ДО и ПОСЛЕ с использованием hamcrest
     assertThat(afterGroup, equalTo(

@@ -7,7 +7,6 @@ import ru.stqa.pft.addressbook.model.Groups;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.testng.Assert.assertEquals;
 
 public class GroupDeletionTests extends BaseTest {
 
@@ -26,10 +25,11 @@ public class GroupDeletionTests extends BaseTest {
         Groups beforeGroup = app.group().all();
         GroupData deletedGroup = beforeGroup.iterator().next();
         app.group().delete(deletedGroup);
-        Groups afterGroup = app.group().all();
 
         //Проверяем количeство групп до и после выполнения теста
-        assertEquals(beforeGroup.size() - 1, afterGroup.size());
+        assertThat(app.group().count(),equalTo(beforeGroup.size() - 1));
+
+        Groups afterGroup = app.group().all();
 
         // Сравниваем списки групп до и после выполнения теста
         assertThat(afterGroup, equalTo(beforeGroup.without(deletedGroup)));
