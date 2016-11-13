@@ -6,10 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 // Универсальные методы для создания контактов
 public class СontactHelper extends BaseHelper {
@@ -98,8 +97,8 @@ public class СontactHelper extends BaseHelper {
   }
 
   //Формирует множество конктактов с текущей страницы
-  public Set<ContactData> all() {
-    Set<ContactData> contacts = new HashSet<>();
+  public Contacts all() {
+    Contacts contacts = new Contacts();
 
     // Находим элементы на странице, заносим в список
     List<WebElement> elements = wd.findElements(By.xpath(".//tr[@name='entry']"));
