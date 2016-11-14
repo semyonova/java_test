@@ -20,7 +20,7 @@ public class ContactModificationTests extends BaseTest {
       app.goTo().pageAddNewContact();
       app.contact().createContact(new ContactData().withFirstName("testname").
               withMiddleName("testmiddlename").withLastName("testLastname").
-              withAddress("testAddress").withMobile("555555").withEmail("test@test.ru").withGroup("test1"));
+              withAddress("testAddress").withPhoneMobile("555555").withEmail("test@test.ru").withGroup("test1"));
     }
   }
 
@@ -33,7 +33,7 @@ public class ContactModificationTests extends BaseTest {
     ContactData modifiedContact =  beforeContact.iterator().next();
     ContactData contact = new ContactData().withId(modifiedContact.getId()).
             withFirstName("jane"). withMiddleName("testmiddlename").withLastName("testLastname6").
-            withAddress("testAddress").withMobile("50654").withEmail("test@test.ru");
+            withAddress("testAddress").withPhoneMobile("50654").withEmail("test@test.ru");
     app.contact().modify(contact);
 
     //Формириуем список контактов ПОСЛЕ теста
