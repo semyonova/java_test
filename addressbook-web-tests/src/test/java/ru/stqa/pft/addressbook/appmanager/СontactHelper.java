@@ -111,10 +111,10 @@ public class СontactHelper extends BaseHelper {
       System.out.println(firstName);
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
       System.out.println(id);
-      String [] phones = element.findElement(By.xpath(".//td[6]")).getText().split("\n");
+      String allPhones = element.findElement(By.xpath(".//td[6]")).getText();
       contacts.add(new ContactData().
               withId(id).withFirstName(firstName).withLastName(lastName).
-              withPhoneHome(phones[0]).withPhoneMobile(phones[1]).withPhoneWork(phones[2]));
+              withAllPhone(allPhones));
     }
     return contacts;
   }
