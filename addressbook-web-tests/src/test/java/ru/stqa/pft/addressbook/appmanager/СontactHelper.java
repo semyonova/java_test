@@ -96,7 +96,7 @@ public class СontactHelper extends BaseHelper {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  //Формирует множество конктактов с текущей страницы
+  //Формирует множество конктактов с текущей (главной) страницы
   public Contacts all() {
     Contacts contacts = new Contacts();
 
@@ -112,9 +112,10 @@ public class СontactHelper extends BaseHelper {
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
       System.out.println(id);
       String allPhones = element.findElement(By.xpath(".//td[6]")).getText();
+      String allEmails = element.findElement(By.xpath(".//td[5]")).getText();
       contacts.add(new ContactData().
               withId(id).withFirstName(firstName).withLastName(lastName).
-              withAllPhone(allPhones));
+              withAllPhone(allPhones).withAllEmails(allEmails));
     }
     return contacts;
   }
@@ -127,10 +128,14 @@ public class СontactHelper extends BaseHelper {
     String home = wd.findElement(By.name("home")).getAttribute("value");
     String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
     String work = wd.findElement(By.name("work")).getAttribute("value");
+    String email = wd.findElement(By.name("email")).getAttribute("value");
+    String email2 = wd.findElement(By.name("email2")).getAttribute("value");
+    String email3 = wd.findElement(By.name("email3")).getAttribute("value");
     wd.navigate().back();
     return new ContactData().
-            withId(contact.getId()).withFirstName(firstname).withLastName(lastname).
-            withPhoneHome(home).withPhoneMobile(mobile).withPhoneWork(work);
+            withId(contact.getId()).withFirstName(firstname).withLastName(lastname)
+            .withPhoneHome(home).withPhoneMobile(mobile).withPhoneWork(work)
+            .withEmail(email).withEmail2(email2).withEmail3(email3);
   }
 }
 
