@@ -105,17 +105,19 @@ public class СontactHelper extends BaseHelper {
 
     //Записываем веб-элементы в созданный ранее список(массив)
     for (WebElement element : elements) {
+      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
+      System.out.println(id);
       String lastName = element.findElement(By.xpath(".//td[2]")).getText();
       System.out.println(lastName);
       String firstName = element.findElement(By.xpath(".//td[3]")).getText();
       System.out.println(firstName);
-      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
-      System.out.println(id);
-      String allPhones = element.findElement(By.xpath(".//td[6]")).getText();
+      String address = element.findElement(By.xpath(".//td[4]")).getText();
+      System.out.println(address);
       String allEmails = element.findElement(By.xpath(".//td[5]")).getText();
+      String allPhones = element.findElement(By.xpath(".//td[6]")).getText();
       contacts.add(new ContactData().
               withId(id).withFirstName(firstName).withLastName(lastName).
-              withAllPhone(allPhones).withAllEmails(allEmails));
+              withAllPhone(allPhones).withAllEmails(allEmails).withAddress(address));
     }
     return contacts;
   }
@@ -131,11 +133,14 @@ public class СontactHelper extends BaseHelper {
     String email = wd.findElement(By.name("email")).getAttribute("value");
     String email2 = wd.findElement(By.name("email2")).getAttribute("value");
     String email3 = wd.findElement(By.name("email3")).getAttribute("value");
+    String address = wd.findElement(By.xpath(".//textarea[@name='address']")).getText();
+    System.out.println(address);
     wd.navigate().back();
     return new ContactData().
             withId(contact.getId()).withFirstName(firstname).withLastName(lastname)
             .withPhoneHome(home).withPhoneMobile(mobile).withPhoneWork(work)
-            .withEmail(email).withEmail2(email2).withEmail3(email3);
+            .withEmail(email).withEmail2(email2).withEmail3(email3)
+            .withAddress(address);
   }
 }
 
