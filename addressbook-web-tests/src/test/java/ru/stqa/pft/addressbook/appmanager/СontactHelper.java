@@ -39,6 +39,7 @@ public class СontactHelper extends BaseHelper {
     type(By.name("firstname"), contactData.getFirstName());
     type(By.name("middlename"), contactData.getMiddleName());
     type(By.name("lastname"), contactData.getLastName());
+    attach(By.name("photo"), contactData.getPhoto());
     type(By.name("address"), contactData.getAddress());
     type(By.name("mobile"), contactData.getPhoneMobile());
     type(By.name("email"), contactData.getEmail());
@@ -46,10 +47,12 @@ public class СontactHelper extends BaseHelper {
     //проверяем тип формы и в зависимости от типа заполняем поле
     //если для формы Модификации контакта вдруг поле найдено, то выводим ошибку
     if (creation) {
-      new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+      if (contactData.getAddress() != null) {
+        new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+      }
     } else {
-      Assert.assertFalse(isElementPresent(By.name("new_group")));
-    }
+        Assert.assertFalse(isElementPresent(By.name("new_group")));
+      }
   }
 
   public void chooseContactById(int id) {
@@ -88,6 +91,10 @@ public class СontactHelper extends BaseHelper {
     wd.findElement(By.xpath("//a[@href='edit.php?id=" + id + "']")).click();
   }
 
+  private void viewDetail(int id) {
+    wd.findElement(By.xpath("//a[@href='view.php?id=" + id + "']")).click();
+  }
+
   public boolean isThereContact() {
     return isElementPresent(By.name("selected[]"));
   }
@@ -108,11 +115,9 @@ public class СontactHelper extends BaseHelper {
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
       System.out.println(id);
       String lastName = element.findElement(By.xpath(".//td[2]")).getText();
-      System.out.println(lastName);
       String firstName = element.findElement(By.xpath(".//td[3]")).getText();
       System.out.println(firstName);
       String address = element.findElement(By.xpath(".//td[4]")).getText();
-      System.out.println(address);
       String allEmails = element.findElement(By.xpath(".//td[5]")).getText();
       String allPhones = element.findElement(By.xpath(".//td[6]")).getText();
       contacts.add(new ContactData().
@@ -141,6 +146,25 @@ public class СontactHelper extends BaseHelper {
             .withPhoneHome(home).withPhoneMobile(mobile).withPhoneWork(work)
             .withEmail(email).withEmail2(email2).withEmail3(email3)
             .withAddress(address);
+  }
+
+  public ContactData infoFromDetails(ContactData contact) {
+    viewDetail(contact.getId());
+
+    String element = wd.findElement(By.xpath(".//div[@id='content']")).getText();
+    System.out.println(element);
+    //Имя
+    //Телефон
+    //Эл.почта
+    //Адрес
+    String Address = wd.findElement(By.xpath(".//div[@id='content']/br[3]")).getText();
+    System.out.println(Address);
+    wd.navigate().back();
+    return new ContactData().withLastName(element);
+            /*withId(contact.getId()).withFirstName(firstname).withLastName(lastname)
+            .withPhoneHome(home).withPhoneMobile(mobile).withPhoneWork(work)
+            .withEmail(email).withEmail2(email2).withEmail3(email3)
+            .withAddress(address);*/
   }
 }
 
