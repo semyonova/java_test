@@ -22,6 +22,7 @@ public class GroupData {
     return id;
   }
 
+
   public GroupData withId(int id) {
     this.id = id;
     return this;
@@ -43,6 +44,14 @@ public class GroupData {
   }
 
   @Override
+  public String toString() {
+    return "GroupData{" +
+            "name='" + name + '\'' +
+            ", id=" + id +
+            '}';
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
@@ -60,7 +69,5 @@ public class GroupData {
     result = 31 * result + id;
     return result;
   }
-
-
 
 }

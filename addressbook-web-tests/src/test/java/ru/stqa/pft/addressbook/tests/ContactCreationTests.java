@@ -22,8 +22,8 @@ public class ContactCreationTests extends BaseTest {
     //Создаём контакт с нужными данными
     app.goTo().pageAddNewContact();
     File photo = new File("src/test/resources/Winter.jpg");
-    ContactData contact = new ContactData().withFirstName("newname")
-            .withMiddleName("testmiddlename").withLastName("testLastname")
+    ContactData contact = new ContactData().withFirstName("newname1")
+            .withMiddleName("middlename").withLastName("astname")
             .withAddress("testAddress").withPhoneMobile("2222")
             .withEmail("test@test.ru").withGroup("1").withPhoto(photo);
     app.contact().createContact(contact);
