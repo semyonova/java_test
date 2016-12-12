@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.generators;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.thoughtworks.xstream.XStream;
 import ru.stqa.pft.addressbook.model.GroupData;
 
@@ -15,10 +17,30 @@ public class GroupDataGenerator {
   public static void main(String[] args) throws IOException {
     int count = Integer.parseInt(args[0]);
     File file = new File(args[1]);
+    String type = args[2];
 
     List<GroupData> groups = generateGroups(count);
-    saveAsCsv(groups, file);
-    saveAsXml(groups, file);
+    if (type.equals("csv")) {
+      saveAsCsv(groups, file);
+    }
+    else if (type.equals("xml")) {
+      saveAsXml(groups, file);
+    }
+    else if (type.equals("json")) {
+      saveAsJson(groups, file);
+    }
+    else {
+      System.out.println("Неверный формат файла");
+    }
+  }
+
+  // Записываем сгенерированные данные в файл json
+  private static void saveAsJson(List<GroupData> groups, File file) throws IOException {
+    Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+    String json = gson.toJson(groups);
+    Writer writer = new FileWriter(file);
+    writer.write(json);
+    writer.close();
   }
 
   // Записываем сгенерированные данные в файл xml

@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.generators;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.thoughtworks.xstream.XStream;
 import ru.stqa.pft.addressbook.model.ContactData;
 
@@ -15,9 +17,27 @@ public class ContactDataGenerator {
   public static void main(String[] args) throws IOException {
     int count = Integer.parseInt(args[0]);
     File file = new File(args[1]);
+    String type = args[2];
 
     List<ContactData> contacts = generateContacts(count);
-    saveAsXml(contacts, file);
+
+    if (type.equals("xml")) {
+      saveAsXml(contacts, file);
+    }
+    else if (type.equals("json")) {
+      saveAsJson(contacts, file);
+    }
+    else {
+      System.out.println("Неверный формат файла");
+    }
+  }
+
+  private static void saveAsJson(List<ContactData> contacts, File file) throws IOException {
+    Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+    String json = gson.toJson(contacts);
+    Writer writer = new FileWriter(file);
+    writer.write(json);
+    writer.close();
   }
 
   // Записываем сгенерированные данные в файл xml
@@ -39,7 +59,7 @@ public class ContactDataGenerator {
               .withMiddleName(String.format("middle name %s", i))
               .withLastName(String.format("last name %s", i))
               .withAddress(String.format("address %s", i))
-              .withPhoneMobile(String.format("phone %s", i))
+              .withPhoneMobile(String.format("8 900 800 7%s", i))
               .withEmail(String.format("email %s", i)));
     }
     return contacts;
