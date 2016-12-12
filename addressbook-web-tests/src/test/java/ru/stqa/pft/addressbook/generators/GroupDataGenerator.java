@@ -1,5 +1,6 @@
 package ru.stqa.pft.addressbook.generators;
 
+import com.thoughtworks.xstream.XStream;
 import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.io.File;
@@ -16,11 +17,22 @@ public class GroupDataGenerator {
     File file = new File(args[1]);
 
     List<GroupData> groups = generateGroups(count);
-    save(groups, file);
+    saveAsCsv(groups, file);
+    saveAsXml(groups, file);
   }
 
-  // Записываем сгенерированные данные в файл
-  private static void save(List<GroupData> groups, File file) throws IOException {
+  // Записываем сгенерированные данные в файл xml
+  private static void saveAsXml(List<GroupData> groups, File file) throws IOException {
+    XStream xstream = new XStream();
+    xstream.processAnnotations(GroupData.class);
+    String xml = xstream.toXML(groups);
+    Writer writer = new FileWriter(file);
+    writer.write(xml);
+    writer.close();
+  }
+
+  // Записываем сгенерированные данные в файл csv
+  private static void saveAsCsv(List<GroupData> groups, File file) throws IOException {
 
     Writer writer = new FileWriter(file);
     for (GroupData group: groups){
