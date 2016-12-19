@@ -1,5 +1,6 @@
 package ru.stqa.pft.addressbook.tests;
 
+import com.thoughtworks.xstream.XStream;
 import org.junit.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -8,6 +9,7 @@ import ru.stqa.pft.addressbook.model.Groups;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
@@ -16,21 +18,38 @@ import static org.hamcrest.junit.MatcherAssert.assertThat;
 public class GroupCreationTests extends BaseTest {
 
   @DataProvider
-  public Iterator<Object[]> validGroups() throws IOException {
-    List<Object[]> list = new ArrayList<>();
-    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.csv")));
-    String line = reader.readLine();
-    while(line != null){
-      String[] split = line.split(";");
-      list.add(new Object[] {new GroupData().withName(split[0]).withHeader(split[1]).withFooter(split[2])});
-      line = reader.readLine();
-    }
-    /*list.add(new Object[]{new GroupData().withName("name1").withHeader("header1").withFooter("footer1")});
-    list.add(new Object[]{new GroupData().withName("name2").withHeader("header2").withFooter("footer2")});*/
+  public Iterator<Object[]> validGroupsCsv() throws IOException {
+    List<Object[]> list = new ArrayList<Object[]>();
+//    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.csv")));
+//    String line = reader.readLine();
+//    while(line != null){
+//      String[] split = line.split(";");
+//      list.add(new Object[] {new GroupData().withName(split[0]).withHeader(split[1]).withFooter(split[2])});
+//      line = reader.readLine();
+//    }
+    list.add(new Object[]{new GroupData().withName("name1").withHeader("header1").withFooter("footer1")});
+    list.add(new Object[]{new GroupData().withName("name2").withHeader("header2").withFooter("footer2")});
     return list.iterator();
   }
 
-  @Test (dataProvider = "validGroups")
+
+  @DataProvider
+  public Iterator<Object[]> validGroups() throws IOException {
+    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.xml")));
+    String line = reader.readLine();
+    String xml = "";
+    while (line != null) {
+      xml += line;
+      line = reader.readLine();
+    }
+    XStream xstream = new XStream();
+    xstream.processAnnotations(GroupData.class);
+    List<GroupData> groups = (List<GroupData>) xstream.fromXML(xml);
+    return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
+  }
+
+
+  @Test(dataProvider = "validGroups")
   public void testGroupCreation(GroupData group) {
     app.goTo().groupPage();
 
@@ -40,7 +59,7 @@ public class GroupCreationTests extends BaseTest {
     app.group().createGroup(group);
 
     //Проверяем количeство групп до и после выполнения теста
-    Assert.assertThat(app.group().count(),equalTo(beforeGroup.size() + 1));
+    Assert.assertThat(app.group().count(), equalTo(beforeGroup.size() + 1));
 
     //Формируем список(массив) из элементов групп ПОСЛЕ теста
     Groups afterGroup = app.group().all();
