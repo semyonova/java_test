@@ -4,79 +4,49 @@
     <middleName>middle name 0</middleName>
     <lastName>last name 0</lastName>
     <address>address 0</address>
-    <phoneMobile>phone 0</phoneMobile>
+    <group>1</group>
+    <phoneMobile>8 800 800 70</phoneMobile>
     <email>email 0</email>
+    <photo>src\test\resources\Winter.jpg</photo>
   </contact>
   <contact>
     <firstName>first name 1</firstName>
     <middleName>middle name 1</middleName>
     <lastName>last name 1</lastName>
     <address>address 1</address>
-    <phoneMobile>phone 1</phoneMobile>
+    <group>1</group>
+    <phoneMobile>8 800 800 71</phoneMobile>
     <email>email 1</email>
+    <photo>src\test\resources\Winter.jpg</photo>
   </contact>
   <contact>
     <firstName>first name 2</firstName>
     <middleName>middle name 2</middleName>
     <lastName>last name 2</lastName>
     <address>address 2</address>
-    <phoneMobile>phone 2</phoneMobile>
+    <group>1</group>
+    <phoneMobile>8 800 800 72</phoneMobile>
     <email>email 2</email>
+    <photo>src\test\resources\Winter.jpg</photo>
   </contact>
   <contact>
     <firstName>first name 3</firstName>
     <middleName>middle name 3</middleName>
     <lastName>last name 3</lastName>
     <address>address 3</address>
-    <phoneMobile>phone 3</phoneMobile>
+    <group>1</group>
+    <phoneMobile>8 800 800 73</phoneMobile>
     <email>email 3</email>
+    <photo>src\test\resources\Winter.jpg</photo>
   </contact>
   <contact>
     <firstName>first name 4</firstName>
     <middleName>middle name 4</middleName>
     <lastName>last name 4</lastName>
     <address>address 4</address>
-    <phoneMobile>phone 4</phoneMobile>
+    <group>1</group>
+    <phoneMobile>8 800 800 74</phoneMobile>
     <email>email 4</email>
-  </contact>
-  <contact>
-    <firstName>first name 5</firstName>
-    <middleName>middle name 5</middleName>
-    <lastName>last name 5</lastName>
-    <address>address 5</address>
-    <phoneMobile>phone 5</phoneMobile>
-    <email>email 5</email>
-  </contact>
-  <contact>
-    <firstName>first name 6</firstName>
-    <middleName>middle name 6</middleName>
-    <lastName>last name 6</lastName>
-    <address>address 6</address>
-    <phoneMobile>phone 6</phoneMobile>
-    <email>email 6</email>
-  </contact>
-  <contact>
-    <firstName>first name 7</firstName>
-    <middleName>middle name 7</middleName>
-    <lastName>last name 7</lastName>
-    <address>address 7</address>
-    <phoneMobile>phone 7</phoneMobile>
-    <email>email 7</email>
-  </contact>
-  <contact>
-    <firstName>first name 8</firstName>
-    <middleName>middle name 8</middleName>
-    <lastName>last name 8</lastName>
-    <address>address 8</address>
-    <phoneMobile>phone 8</phoneMobile>
-    <email>email 8</email>
-  </contact>
-  <contact>
-    <firstName>first name 9</firstName>
-    <middleName>middle name 9</middleName>
-    <lastName>last name 9</lastName>
-    <address>address 9</address>
-    <phoneMobile>phone 9</phoneMobile>
-    <email>email 9</email>
+    <photo>src\test\resources\Winter.jpg</photo>
   </contact>
 </list>

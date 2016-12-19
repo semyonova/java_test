@@ -23,11 +23,9 @@ public class ContactDataGenerator {
 
     if (type.equals("xml")) {
       saveAsXml(contacts, file);
-    }
-    else if (type.equals("json")) {
+    } else if (type.equals("json")) {
       saveAsJson(contacts, file);
-    }
-    else {
+    } else {
       System.out.println("Неверный формат файла");
     }
   }
@@ -53,14 +51,17 @@ public class ContactDataGenerator {
   // Генерируем тестовые данные
   private static List<ContactData> generateContacts(int count) {
     List<ContactData> contacts = new ArrayList<>();
-    for (int i = 0; i < count; i++){
+    for (int i = 0; i < count; i++) {
       contacts.add(new ContactData()
               .withFirstName(String.format("first name %s", i))
               .withMiddleName(String.format("middle name %s", i))
               .withLastName(String.format("last name %s", i))
               .withAddress(String.format("address %s", i))
-              .withPhoneMobile(String.format("8 900 800 7%s", i))
-              .withEmail(String.format("email %s", i)));
+              .withPhoneMobile(String.format("8 800 800 7%s", i))
+              .withEmail(String.format("email %s", i))
+              .withPhoto(new File("src/test/resources/Winter.jpg"))
+              .withGroup("1")
+      );
     }
     return contacts;
   }
