@@ -34,22 +34,23 @@ public class GroupCreationTests extends BaseTest {
 
 
   @DataProvider
-  public Iterator<Object[]> validGroups() throws IOException {
-    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.xml")));
+  public Iterator<Object[]> validGroupsXml() throws IOException {
+    try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.xml")))){
     String line = reader.readLine();
-    String xml = "";
-    while (line != null) {
-      xml += line;
-      line = reader.readLine();
+      String xml = "";
+      while (line != null) {
+        xml += line;
+        line = reader.readLine();
+      }
+      XStream xstream = new XStream();
+      xstream.processAnnotations(GroupData.class);
+      List<GroupData> groups = (List<GroupData>) xstream.fromXML(xml);
+      return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
-    XStream xstream = new XStream();
-    xstream.processAnnotations(GroupData.class);
-    List<GroupData> groups = (List<GroupData>) xstream.fromXML(xml);
-    return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
   }
 
 
-  @Test(dataProvider = "validGroups")
+  @Test(dataProvider = "validGroupsXml")
   public void testGroupCreation(GroupData group) {
     app.goTo().groupPage();
 
