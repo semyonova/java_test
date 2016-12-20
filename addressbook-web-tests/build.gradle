@@ -11,3 +11,15 @@ dependencies {
     compile 'com.thoughtworks.xstream:xstream:1.4.8'
     compile 'com.google.code.gson:gson:2.8.0'
 }
+
+task testGroups(type: test) {
+    useTestNG{
+        suites 'src/test/resources/test-ng-groups.xml'
+    }
+}
+
+task testContacts(type: test) {
+    useTestNG{
+        suites 'src/test/resources/test-ng-contacts.xml'
+    }
+}

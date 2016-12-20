@@ -11,9 +11,9 @@ import ru.stqa.pft.addressbook.model.Contacts;
 import java.util.List;
 
 // Универсальные методы для создания контактов
-public class СontactHelper extends BaseHelper {
+public class ContactHelper extends BaseHelper {
 
-  public СontactHelper(WebDriver wd) {
+  public ContactHelper(WebDriver wd) {
     super(wd);
   }
 
