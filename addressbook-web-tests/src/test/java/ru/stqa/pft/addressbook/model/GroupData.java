@@ -6,12 +6,12 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
+@Entity
 @XStreamAlias("group")
-@javax.persistence.Entity
 @Table(name = "group_list")
 public class GroupData {
   @Expose
