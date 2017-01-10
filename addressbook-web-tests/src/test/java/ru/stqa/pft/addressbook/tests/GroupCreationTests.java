@@ -18,20 +18,26 @@ import static org.hamcrest.junit.MatcherAssert.assertThat;
 public class GroupCreationTests extends BaseTest {
 
   @DataProvider
-  public Iterator<Object[]> validGroupsCsv() throws IOException {
+  public Iterator<Object[]> validGroups() throws IOException {
     List<Object[]> list = new ArrayList<Object[]>();
-//    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.csv")));
-//    String line = reader.readLine();
-//    while(line != null){
-//      String[] split = line.split(";");
-//      list.add(new Object[] {new GroupData().withName(split[0]).withHeader(split[1]).withFooter(split[2])});
-//      line = reader.readLine();
-//    }
     list.add(new Object[]{new GroupData().withName("name1").withHeader("header1").withFooter("footer1")});
     list.add(new Object[]{new GroupData().withName("name2").withHeader("header2").withFooter("footer2")});
     return list.iterator();
   }
 
+  //Нужно ещё поизучать
+  @DataProvider
+  public Iterator<Object[]> validGroupsCsv() throws IOException {
+    List<Object[]> list = new ArrayList<Object[]>();
+    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.csv")));
+    String line = reader.readLine();
+    while (line != null) {
+      String[] split = line.split(";");
+      list.add(new Object[]{new GroupData().withName(split[0]).withHeader(split[1]).withFooter(split[2])});
+      line = reader.readLine();
+    }
+    return list.iterator();
+  }
 
   @DataProvider
   public Iterator<Object[]> validGroupsXml() throws IOException {
@@ -55,7 +61,7 @@ public class GroupCreationTests extends BaseTest {
     app.goTo().groupPage();
 
     //Формируем список(массив) из элементов групп До теста
-    Groups beforeGroup = app.group().all();
+    Groups beforeGroup = app.db().groups();
 
     app.group().createGroup(group);
 
@@ -63,7 +69,7 @@ public class GroupCreationTests extends BaseTest {
     Assert.assertThat(app.group().count(), equalTo(beforeGroup.size() + 1));
 
     //Формируем список(массив) из элементов групп ПОСЛЕ теста
-    Groups afterGroup = app.group().all();
+    Groups afterGroup = app.db().groups();
 
     //Сравниваем множества ДО и ПОСЛЕ с использованием hamcrest
     assertThat(afterGroup, equalTo(
