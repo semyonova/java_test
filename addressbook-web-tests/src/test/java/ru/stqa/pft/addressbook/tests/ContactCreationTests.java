@@ -71,7 +71,7 @@ public class ContactCreationTests extends BaseTest {
     app.goTo().HomePage();
 
     //Формируем список(массив) из элементов групп До теста
-    Contacts beforeContact = app.contact().all();
+    Contacts beforeContact = app.db().contacts();
 
     //Создаём контакт с нужными данными
     app.goTo().pageAddNewContact();
@@ -79,7 +79,7 @@ public class ContactCreationTests extends BaseTest {
     app.contact().createContact(contact);
 
     //Формируем список(массив) из элементов групп После теста
-    Contacts afterContact = app.contact().all();
+    Contacts afterContact = app.db().contacts();
 
     //Сравниваем размер списков контактов до и после выполнения теста
     assertEquals(beforeContact.size() + 1, afterContact.size());

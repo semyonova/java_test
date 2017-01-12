@@ -13,10 +13,9 @@ public class ContactDeletionTests extends BaseTest {
 
   @BeforeMethod
   public void ensurePrecondition() {
-    app.goTo().HomePage();
 
     //Проверяем наличие контактов, если их нет, создаём один
-    if (app.contact().all().size() == 0) {
+    if (app.db().contacts().size() == 0) {
       app.goTo().pageAddNewContact();
       app.contact().createContact(new ContactData().withFirstName("testname").
               withMiddleName("testmiddlename").withLastName("testLastname").
@@ -28,7 +27,7 @@ public class ContactDeletionTests extends BaseTest {
   public void testContactDeletion() {
 
     //Формириуем список контактов ДО теста
-   Contacts beforeContact = app.contact().all();
+   Contacts beforeContact = app.db().contacts();
 
     //Выбираем удаляемый контакт
     ContactData deletedContact = beforeContact.iterator().next();
@@ -38,7 +37,7 @@ public class ContactDeletionTests extends BaseTest {
     app.goTo().HomePage();
 
     //Формириуем список контактов ПОСЛЕ теста
-    Contacts afterContact = app.contact().all();
+    Contacts afterContact = app.db().contacts();
 
     //Проверяем количeство контактов до и после выполнения теста
     Assert.assertEquals(beforeContact.size() - 1, afterContact.size());
