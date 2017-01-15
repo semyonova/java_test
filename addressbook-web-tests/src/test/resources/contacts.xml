@@ -4,49 +4,9 @@
     <middleName>middle name 0</middleName>
     <lastName>last name 0</lastName>
     <address>address 0</address>
-    <group>1</group>
+    <group>test 1</group>
     <phoneMobile>8 800 800 70</phoneMobile>
     <email>email 0</email>
-    <photo>src\test\resources\Winter.jpg</photo>
-  </contact>
-  <contact>
-    <firstName>first name 1</firstName>
-    <middleName>middle name 1</middleName>
-    <lastName>last name 1</lastName>
-    <address>address 1</address>
-    <group>1</group>
-    <phoneMobile>8 800 800 71</phoneMobile>
-    <email>email 1</email>
-    <photo>src\test\resources\Winter.jpg</photo>
-  </contact>
-  <contact>
-    <firstName>first name 2</firstName>
-    <middleName>middle name 2</middleName>
-    <lastName>last name 2</lastName>
-    <address>address 2</address>
-    <group>1</group>
-    <phoneMobile>8 800 800 72</phoneMobile>
-    <email>email 2</email>
-    <photo>src\test\resources\Winter.jpg</photo>
-  </contact>
-  <contact>
-    <firstName>first name 3</firstName>
-    <middleName>middle name 3</middleName>
-    <lastName>last name 3</lastName>
-    <address>address 3</address>
-    <group>1</group>
-    <phoneMobile>8 800 800 73</phoneMobile>
-    <email>email 3</email>
-    <photo>src\test\resources\Winter.jpg</photo>
-  </contact>
-  <contact>
-    <firstName>first name 4</firstName>
-    <middleName>middle name 4</middleName>
-    <lastName>last name 4</lastName>
-    <address>address 4</address>
-    <group>1</group>
-    <phoneMobile>8 800 800 74</phoneMobile>
-    <email>email 4</email>
     <photo>src\test\resources\Winter.jpg</photo>
   </contact>
 </list>

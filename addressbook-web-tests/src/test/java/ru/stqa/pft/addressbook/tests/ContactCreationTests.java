@@ -62,20 +62,18 @@ public class ContactCreationTests extends BaseTest {
     list.add(new Object[]{new ContactData().withFirstName("newname1")
             .withMiddleName("middlename").withLastName("astname")
             .withAddress("testAddress").withPhoneMobile("2222")
-            .withEmail("test@test.ru").withGroup("1").withPhoto(photo)});
+            .withEmail("test@test.ru").withGroup("test 1").withPhoto(photo)});
     return list.iterator();
   }
 
-  @Test (dataProvider = "validContactsFromJson")
+  @Test (dataProvider = "validContacts")
   public void testContactCreation(ContactData contact) {
-    app.goTo().HomePage();
 
     //Формируем список(массив) из элементов групп До теста
     Contacts beforeContact = app.db().contacts();
 
     //Создаём контакт с нужными данными
     app.goTo().pageAddNewContact();
-
     app.contact().createContact(contact);
 
     //Формируем список(массив) из элементов групп После теста

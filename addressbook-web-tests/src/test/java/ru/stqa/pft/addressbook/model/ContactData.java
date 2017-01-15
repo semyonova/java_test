@@ -76,6 +76,7 @@ public class ContactData {
     return new File(photo);
   }
 
+
   public ContactData withPhoto(File photo) {
     this.photo = photo.getPath();
     return this;
@@ -217,6 +218,16 @@ public class ContactData {
             ", firstName='" + firstName + '\'' +
             ", middleName='" + middleName + '\'' +
             ", lastName='" + lastName + '\'' +
+            ", address='" + address + '\'' +
+            ", group='" + group + '\'' +
+            ", phoneHome='" + phoneHome + '\'' +
+            ", phoneMobile='" + phoneMobile + '\'' +
+            ", phoneWork='" + phoneWork + '\'' +
+            ", allPhone='" + allPhone + '\'' +
+            ", allEmails='" + allEmails + '\'' +
+            ", email='" + email + '\'' +
+            ", email2='" + email2 + '\'' +
+            ", email3='" + email3 + '\'' +
             '}';
   }
 
@@ -232,13 +243,13 @@ public class ContactData {
     if (middleName != null ? !middleName.equals(that.middleName) : that.middleName != null) return false;
     if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
     if (address != null ? !address.equals(that.address) : that.address != null) return false;
-    if (group != null ? !group.equals(that.group) : that.group != null) return false;
     if (phoneHome != null ? !phoneHome.equals(that.phoneHome) : that.phoneHome != null) return false;
     if (phoneMobile != null ? !phoneMobile.equals(that.phoneMobile) : that.phoneMobile != null) return false;
     if (phoneWork != null ? !phoneWork.equals(that.phoneWork) : that.phoneWork != null) return false;
     if (email != null ? !email.equals(that.email) : that.email != null) return false;
     if (email2 != null ? !email2.equals(that.email2) : that.email2 != null) return false;
     return email3 != null ? email3.equals(that.email3) : that.email3 == null;
+
   }
 
   @Override
@@ -248,7 +259,6 @@ public class ContactData {
     result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
     result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
     result = 31 * result + (address != null ? address.hashCode() : 0);
-    result = 31 * result + (group != null ? group.hashCode() : 0);
     result = 31 * result + (phoneHome != null ? phoneHome.hashCode() : 0);
     result = 31 * result + (phoneMobile != null ? phoneMobile.hashCode() : 0);
     result = 31 * result + (phoneWork != null ? phoneWork.hashCode() : 0);
@@ -257,5 +267,4 @@ public class ContactData {
     result = 31 * result + (email3 != null ? email3.hashCode() : 0);
     return result;
   }
-
 }
