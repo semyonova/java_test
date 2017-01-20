@@ -42,6 +42,9 @@ public class GroupModificationTests extends BaseTest {
 
     // Проверяем элементы списков до и после выполнения теста
     assertThat(afterGroup, equalTo(beforeGroup.without(modifiedGroup).withAdded(group)));
+
+    //Сравниваем список групп из БД со списком групп через интерфейс
+    verifyGroupListInUA();
   }
 
 }

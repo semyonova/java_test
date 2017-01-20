@@ -60,7 +60,6 @@ public class ContactDataGenerator {
               .withPhoneMobile(String.format("8 800 800 7%s", i))
               .withEmail(String.format("email %s", i))
               .withPhoto(new File("src/test/resources/Winter.jpg"))
-              .withGroup("1")
       );
     }
     return contacts;
