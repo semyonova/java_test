@@ -16,7 +16,7 @@ public class GroupModificationTests extends BaseTest {
     if (app.db().groups().size() == 0)
     {
       app.goTo().groupPage();
-      app.group().createGroup(new GroupData().withName("groupps"));
+      app.group().createGroup(new GroupData().withName("groups"));
     }
   }
 

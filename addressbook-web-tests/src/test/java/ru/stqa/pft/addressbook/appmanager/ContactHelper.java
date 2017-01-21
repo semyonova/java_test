@@ -3,6 +3,7 @@ package ru.stqa.pft.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
@@ -46,15 +47,17 @@ public class ContactHelper extends BaseHelper {
     //проверяем тип формы и в зависимости от типа заполняем поле
     //если для формы Модификации контакта вдруг поле найдено, то выводим ошибку
     if (creation) {
-      //if (contactData.getGroup() != null) {
-      //  new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
-     //}
+      if (contactData.getGroups().size() > 0) {
+        Assert.assertTrue(contactData.getGroups().size() == 1);
+        new Select(wd.findElement(By.name("new_group")))
+                .selectByVisibleText(contactData.getGroups().iterator().next().getName());
+     }
     } else {
         Assert.assertFalse(isElementPresent(By.name("new_group")));
       }
   }
 
-  public void chooseContactById(int id) {
+  private void chooseContactById(int id) {
     wd.findElement(By.cssSelector("input[id ='" + id + "']")).click();
   }
 
@@ -86,19 +89,33 @@ public class ContactHelper extends BaseHelper {
     returnToHomePage();
   }
 
+  public void addContactToGroup(int contactId, int groupId) {
+    chooseContactById(contactId);
+    selectGroupForAddContact(groupId);
+    clickAddTo();
+  }
+
+  private void clickAddTo() {
+    click(By.name("add"));
+  }
+
   private void modifyContact(int id) {
     wd.findElement(By.xpath("//a[@href='edit.php?id=" + id + "']")).click();
+  }
+
+  private void selectGroupForAddContact(int id) {
+    wd.findElement(By.name("to_group")).findElement(By.cssSelector("option[value ='" + id + "']")).click();
   }
 
   private void viewDetail(int id) {
     wd.findElement(By.xpath("//a[@href='view.php?id=" + id + "']")).click();
   }
 
-  public boolean isThereContact() {
+  private boolean isThereContact() {
     return isElementPresent(By.name("selected[]"));
   }
 
-  public int getContactCount() {
+  private int getContactCount() {
     return wd.findElements(By.name("selected[]")).size();
   }
 
