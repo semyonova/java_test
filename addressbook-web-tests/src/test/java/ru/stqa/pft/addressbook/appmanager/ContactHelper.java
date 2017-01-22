@@ -7,8 +7,10 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.List;
+import java.util.Set;
 
 // Универсальные методы для создания контактов
 public class ContactHelper extends BaseHelper {
@@ -39,10 +41,10 @@ public class ContactHelper extends BaseHelper {
     type(By.name("firstname"), contactData.getFirstName());
     type(By.name("middlename"), contactData.getMiddleName());
     type(By.name("lastname"), contactData.getLastName());
-    attach(By.name("photo"), contactData.getPhoto());
     type(By.name("address"), contactData.getAddress());
     type(By.name("mobile"), contactData.getPhoneMobile());
     type(By.name("email"), contactData.getEmail());
+    attach(By.name("photo"), contactData.getPhoto());
 
     //проверяем тип формы и в зависимости от типа заполняем поле
     //если для формы Модификации контакта вдруг поле найдено, то выводим ошибку
@@ -117,6 +119,34 @@ public class ContactHelper extends BaseHelper {
 
   private int getContactCount() {
     return wd.findElements(By.name("selected[]")).size();
+  }
+
+  //Проверяем включён ли контакт в группы
+  //если нет - выбираем любую группу
+  //если включён во все - возвращаем 0
+  //если не включён в какую либо - возвращаем эту группу
+
+  public GroupData verifyGroupByContact(Set<GroupData> allGroups, Set<GroupData> groupsOfContact) {
+
+    if (groupsOfContact.size() == 0)
+    {
+      GroupData selectedGroup = allGroups.iterator().next();
+      System.out.println("   ");
+      System.out.println("   ");
+      System.out.println(selectedGroup.getId());
+      return selectedGroup;
+    }
+    else if (allGroups.size() == groupsOfContact.size()) {
+      return null;
+    }
+    else {
+      for (GroupData allG : allGroups) {
+          if (groupsOfContact.contains(allG))
+            continue;
+          else return allG;
+      }
+    }
+    return null;
   }
 
   //Формирует множество конктактов с текущей (главной) страницы
