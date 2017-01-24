@@ -7,10 +7,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
-import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.List;
-import java.util.Set;
 
 // Универсальные методы для создания контактов
 public class ContactHelper extends BaseHelper {
@@ -97,6 +95,16 @@ public class ContactHelper extends BaseHelper {
     clickAddTo();
   }
 
+  public void deleteContactFromGroup(int contactId, int groupId) {
+    selectGroup(groupId);
+    chooseContactById(contactId);
+    removeFromGroup();
+  }
+
+  private void removeFromGroup() {
+    wd.findElement(By.name("remove")).click();
+  }
+
   private void clickAddTo() {
     click(By.name("add"));
   }
@@ -107,6 +115,10 @@ public class ContactHelper extends BaseHelper {
 
   private void selectGroupForAddContact(int id) {
     wd.findElement(By.name("to_group")).findElement(By.cssSelector("option[value ='" + id + "']")).click();
+  }
+
+  private void selectGroup(int id) {
+    wd.findElement(By.name("group")).findElement(By.cssSelector("option[value ='" + id + "']")).click();
   }
 
   private void viewDetail(int id) {
@@ -121,33 +133,6 @@ public class ContactHelper extends BaseHelper {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  //Проверяем включён ли контакт в группы
-  //если нет - выбираем любую группу
-  //если включён во все - возвращаем 0
-  //если не включён в какую либо - возвращаем эту группу
-
-  public GroupData verifyGroupByContact(Set<GroupData> allGroups, Set<GroupData> groupsOfContact) {
-
-    if (groupsOfContact.size() == 0)
-    {
-      GroupData selectedGroup = allGroups.iterator().next();
-      System.out.println("   ");
-      System.out.println("   ");
-      System.out.println(selectedGroup.getId());
-      return selectedGroup;
-    }
-    else if (allGroups.size() == groupsOfContact.size()) {
-      return null;
-    }
-    else {
-      for (GroupData allG : allGroups) {
-          if (groupsOfContact.contains(allG))
-            continue;
-          else return allG;
-      }
-    }
-    return null;
-  }
 
   //Формирует множество конктактов с текущей (главной) страницы
   public Contacts all() {

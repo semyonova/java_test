@@ -32,4 +32,8 @@ public class NavigationHelper extends BaseHelper {
     }
     click(By.linkText("home"));
   }
+
+  public void allGroup() {
+    wd.findElement(By.name("group")).findElement(By.cssSelector("option[value ='']")).click();
+  }
 }

@@ -55,7 +55,6 @@ public class GroupData {
     return id;
   }
 
-
   public GroupData withId(int id) {
     this.id = id;
     return this;
@@ -75,6 +74,12 @@ public class GroupData {
     this.footer = footer;
     return this;
   }
+
+  public GroupData addContact(ContactData contact) {
+    contacts.add(contact);
+    return this;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -98,7 +103,6 @@ public class GroupData {
     result = 31 * result + id;
     return result;
   }
-
 
   @Override
   public String toString() {

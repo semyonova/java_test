@@ -174,6 +174,11 @@ public class ContactData {
     return this;
   }
 
+  public ContactData removeGroup(GroupData group) {
+    groups.remove(group);
+    return this;
+  }
+
 
   public Set<GroupData> getGroups() {
     return new Groups(groups);
@@ -274,5 +279,6 @@ public class ContactData {
             ", email3='" + email3 + '\'' +
             '}';
   }
+
 
 }
