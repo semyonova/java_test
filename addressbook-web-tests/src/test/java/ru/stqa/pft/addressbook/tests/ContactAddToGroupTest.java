@@ -44,22 +44,18 @@ public class ContactAddToGroupTest extends BaseTest {
     app.goTo().HomePage();
     ContactData addedContact = beforeContact.iterator().next();
 
-    //Проверяем включён ли контакт в группы
-    //если нет - выбираем любую группу
-    //если включён во все - возвращаем пустую группу
-    //если не включён в какую либо - возвращаем эту группу
+    //Проверяем включён ли контакт в группы:
+    //если включён во все - выбираем пустую группу
+    //если не включён в какую либо - выбираем эту группу
 
     Groups allGroups = app.db().groups();
     Set<GroupData> groupsOfContact = addedContact.getGroups();
 
     GroupData selectedGroup = null;
 
-    if (groupsOfContact.size() == 0) {
-      selectedGroup = allGroups.iterator().next();
-    }
-    else if (allGroups.size() == groupsOfContact.size()) {
+    if (allGroups.size() == groupsOfContact.size()) {
       app.goTo().groupPage();
-      GroupData group = new GroupData().withName("Zina");
+      GroupData group = new GroupData().withName("Zina").withHeader("").withFooter("");
       app.group().createGroup(group);
       app.goTo().HomePage();
       Groups afterGroup = app.db().groups();
@@ -79,13 +75,11 @@ public class ContactAddToGroupTest extends BaseTest {
     //Формириуем список контактов ПОСЛЕ теста
     Contacts afterContact = app.db().contacts();
 
-    ContactData contact = addedContact.inGroup(selectedGroup);
-    GroupData group = selectedGroup.addContact(contact);
-
-    Contacts superContact = beforeContact.without(addedContact)
-            .withAdded(contact.inGroup(group));
-
     // Сравниваем списки контактов до и после выполнения теста
-    assertThat(afterContact, equalTo(superContact));
+    // из первоначального списка удаляем редактируемый контакт и добавляем редактируемый контакт,
+    // включённый в группу, которая в свою очередь содержит редактируемый контакт
+    assertThat(afterContact, equalTo(beforeContact.without(addedContact)
+            .withAdded(addedContact.inGroup(selectedGroup.addContact(addedContact)))));
+
   }
 }
