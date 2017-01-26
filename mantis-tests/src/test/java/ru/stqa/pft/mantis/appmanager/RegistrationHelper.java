@@ -10,7 +10,7 @@ public class RegistrationHelper {
 
   public RegistrationHelper(ApplicationManager app) {
     this.app = app;
-    wd = app.wd;
+    wd = app.getDriver();
   }
 
   public void start(String username, String email) {
