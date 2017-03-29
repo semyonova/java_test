@@ -2,10 +2,12 @@ package ru.stqa.pft.mantis.appmanager;
 
 
 import org.apache.commons.net.ftp.FTPClient;
+import ru.stqa.pft.mantis.model.MailMessage;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class FtpHelper {
   private final ApplicationManager app;
@@ -41,4 +43,15 @@ public class FtpHelper {
     ftp.rename(backup, target);
     ftp.disconnect();
   }
+
+  //Выбираем файлы писем и получаем из них объекты писем (кому, текст)
+  public List<MailMessage> listMail(int count, long timeout){
+    long start = System.currentTimeMillis();
+    return null;
+  }
+
+  private void fileToModelMail(String m) {
+    //ftp.retrieveFileStream(String m);
+  }
 }
+
