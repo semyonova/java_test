@@ -9,6 +9,7 @@ public class RegistrationHelper extends BaseHelper {
     super(app);
   }
 
+  //страница регистрации
   public void start(String username, String email) {
     wd.get(app.getProperty("web.baseUrl") + "/signup_page.php");
     type(By.name("username"), username);
@@ -16,6 +17,7 @@ public class RegistrationHelper extends BaseHelper {
     click(By.cssSelector("input[value='Signup']"));
   }
 
+  //смена пароля по ссылке из письма
   public void finish(String confirmationLink, String password) {
     wd.get(confirmationLink);
     type(By.name("password"), password);
