@@ -1,11 +1,11 @@
 package ru.stqa.pft.mantis.appmanager;
 
-import biz.futureware.mantis.rpc.soap.client.MantisConnectLocator;
-import biz.futureware.mantis.rpc.soap.client.MantisConnectPortType;
-import biz.futureware.mantis.rpc.soap.client.ProjectData;
+import biz.futureware.mantis.rpc.soap.client.*;
+import ru.stqa.pft.mantis.model.Issue;
 import ru.stqa.pft.mantis.model.Project;
 
 import javax.xml.rpc.ServiceException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -21,11 +21,44 @@ public class SoapHelper {
     this.app = app;
   }
 
-  public Set<Project> getProjects() throws MalformedURLException, ServiceException, RemoteException {
-    MantisConnectPortType mc = new MantisConnectLocator()
+  private MantisConnectPortType getMantisConnect() throws ServiceException, MalformedURLException {
+    return new MantisConnectLocator()
             .getMantisConnectPort(new URL("http://mantisbt-1.2.20/api/soap/mantisconnect.php"));
+    //ftp.connect(app.getProperty("web.soapUrl"));
+  }
+
+  public Set<Project> getProjects() throws MalformedURLException, ServiceException, RemoteException {
+    MantisConnectPortType mc = getMantisConnect();
     ProjectData[] projects = mc.mc_projects_get_user_accessible("administrator", "root");
     return Arrays.asList(projects).stream()
             .map((p) -> new Project().withId(p.getId().intValue()).withName(p.getName())).collect(Collectors.toSet());
+  }
+
+  public Issue addIssue(Issue issue) throws ServiceException, MalformedURLException, RemoteException {
+    //Устанавливаем соединение с соап протоколом
+    MantisConnectPortType mc = getMantisConnect();
+
+    //Получаем список категорий, выбранного проекта по Ишью
+    String[] categories = mc.mc_project_get_categories("administrator", "root", BigInteger.valueOf(issue.getProject().getId()));
+
+    //Формируем объет ИшьюДата для соап протокола из объекта Ишью переданного в метод
+    IssueData issueData = new IssueData();
+    issueData.setSummary(issue.getSummary());
+    issueData.setDescription(issue.getDescription());
+    issueData.setProject(new ObjectRef(BigInteger.valueOf(issue.getProject().getId()), issue.getProject().getName()));
+    issueData.setCategory(categories[0]);
+
+    //Создаём баг в системе Мантис через соап протокол
+    BigInteger issueId = mc.mc_issue_add("administrator", "root", issueData);
+
+    //Получаем созданный баг в Мантисе
+    IssueData createdIssueData = mc.mc_issue_get("administrator", "root", issueId);
+
+    //Преобразуем полученный баг (ИшьюДата) в объект Ишью
+    return new Issue().withId(createdIssueData.getId().intValue())
+            .withSummary(createdIssueData.getSummary())
+            .withDescription(createdIssueData.getDescription())
+            .withProject(new Project().withId(createdIssueData.getProject().getId().intValue())
+                                      .withName(createdIssueData.getProject().getName()));
   }
 }
