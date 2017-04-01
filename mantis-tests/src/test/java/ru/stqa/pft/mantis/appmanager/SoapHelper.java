@@ -23,8 +23,7 @@ public class SoapHelper {
 
   private MantisConnectPortType getMantisConnect() throws ServiceException, MalformedURLException {
     return new MantisConnectLocator()
-            .getMantisConnectPort(new URL("http://mantisbt-1.2.20/api/soap/mantisconnect.php"));
-    //ftp.connect(app.getProperty("web.soapUrl"));
+            .getMantisConnectPort(new URL(app.getProperty("web.soapUrl")));
   }
 
   public Set<Project> getProjects() throws MalformedURLException, ServiceException, RemoteException {
