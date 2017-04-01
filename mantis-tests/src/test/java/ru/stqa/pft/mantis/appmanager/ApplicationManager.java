@@ -23,6 +23,7 @@ public class ApplicationManager {
   private FtpHelper ftp;
   private MailHelper mailHelper;
   private DbHelper dbHelper;
+  private SoapHelper soap;
 
   public ApplicationManager(String browser) {
     this.browser = browser;
@@ -81,6 +82,13 @@ public class ApplicationManager {
       dbHelper = new DbHelper();
     }
     return dbHelper;
+  }
+
+  public SoapHelper soap(){
+    if (soap == null){
+      soap = new SoapHelper(this);
+    }
+    return soap;
   }
 
   public WebDriver getDriver() {

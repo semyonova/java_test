@@ -24,9 +24,7 @@ public class ChangePasswordTest extends BaseTest {
   public void testChangePassword() throws IOException, SQLException {
 
     //Авторизуемся под администратором
-    String administrator = "administrator";
-    String password = "root";
-    app.web().loginWeb(administrator, password);
+    app.web().loginWeb("administrator", "root");
 
     //Выбираем пользователя, которому меняем пароль
     Users user = app.db().listUsers().iterator().next();
