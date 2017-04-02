@@ -54,34 +54,20 @@ public class SoapHelper {
     IssueData createdIssueData = mc.mc_issue_get("administrator", "root", issueId);
 
     //Преобразуем полученный баг (ИшьюДата) в объект Ишью
-    return convertToIssue(createdIssueData);
+    return convertToIssue(issueId.intValue());
   }
 
-  public Issue convertToIssue(IssueData issueData){
+  //Получаю баг по id из Мантиса и преобразую его в объект Ишью
+  public Issue convertToIssue(int issueId) throws MalformedURLException, ServiceException, RemoteException {
+
+    MantisConnectPortType mc = getMantisConnect();
+    IssueData issueData = mc.mc_issue_get("administrator", "root", BigInteger.valueOf(issueId));
 
     return new Issue().withId(issueData.getId().intValue())
             .withSummary(issueData.getSummary())
             .withDescription(issueData.getDescription())
+            .withStatus(issueData.getStatus().getName())
             .withProject(new Project().withId(issueData.getProject().getId().intValue())
                     .withName(issueData.getProject().getName()));
-
-  }
-
-  //Получаю информацию о баге - открыт он или закрыт
-  public boolean isIssueOpen(int issueId) throws ServiceException, MalformedURLException, RemoteException {
-    MantisConnectPortType mc = getMantisConnect();
-    IssueData newIssueData = mc.mc_issue_get("administrator", "root", BigInteger.valueOf(issueId));
-
-    String name = newIssueData.getStatus().getName();
-    System.out.println(name);
-
-    if (newIssueData.getStatus().getName().equals("closed")) {
-      System.out.println(newIssueData.getStatus().getName());
-      return false;
-    }
-    else {
-      System.out.println(newIssueData.getStatus().getName());
-      return true;
-    }
   }
 }

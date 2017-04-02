@@ -20,15 +20,13 @@ public class ChangePasswordTest extends BaseTest {
 
   @BeforeMethod
   public void startMailServer() throws RemoteException, ServiceException, MalformedURLException {
+    //Проверяю есть ли открытый баг по данному тесту, если есть - пропускаю тест
     skipIfNotFixed(0000001);
     app.mail().start();
   }
 
   @Test
   public void testChangePassword() throws IOException, SQLException, ServiceException {
-
-    //Проверяю есть ли открытый баг по данному тесту, если есть - пропускаю тест
-    //skipIfNotFixed(0000001);
 
     //Авторизуемся под администратором
     app.web().loginWeb("administrator", "root");

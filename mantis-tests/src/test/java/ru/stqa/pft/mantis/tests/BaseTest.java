@@ -5,6 +5,7 @@ import org.testng.SkipException;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import ru.stqa.pft.mantis.appmanager.ApplicationManager;
+import ru.stqa.pft.mantis.model.Issue;
 
 import javax.xml.rpc.ServiceException;
 import java.io.File;
@@ -30,8 +31,21 @@ public class BaseTest {
     app.stop();
   }
 
+  //Получаю информацию о баге - открыт он или закрыт
+  public boolean isIssueOpen(int issueId) throws ServiceException, MalformedURLException, RemoteException {
+    Issue issue = app.soap().convertToIssue(issueId);
+    if (issue.getStatus().equals("closed")) {
+      System.out.println(issue.getStatus());
+      return false;
+    }
+    else {
+      System.out.println(issue.getStatus());
+      return true;
+    }
+  }
+
   public void skipIfNotFixed(int issueId) throws RemoteException, ServiceException, MalformedURLException {
-    if (app.soap().isIssueOpen(issueId)) {
+    if (isIssueOpen(issueId)) {
       System.out.print("Пропуск теста");
       throw new SkipException("Ignored because of issue " + issueId);
     }
