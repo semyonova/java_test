@@ -7,7 +7,10 @@ import ru.lanwen.verbalregex.VerbalExpression;
 import ru.stqa.pft.mantis.model.MailMessage;
 import ru.stqa.pft.mantis.model.Users;
 
+import javax.xml.rpc.ServiceException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,12 +19,16 @@ import static org.testng.AssertJUnit.assertTrue;
 public class ChangePasswordTest extends BaseTest {
 
   @BeforeMethod
-  public void startMailServer() {
+  public void startMailServer() throws RemoteException, ServiceException, MalformedURLException {
+    skipIfNotFixed(0000001);
     app.mail().start();
   }
 
   @Test
-  public void testChangePassword() throws IOException, SQLException {
+  public void testChangePassword() throws IOException, SQLException, ServiceException {
+
+    //Проверяю есть ли открытый баг по данному тесту, если есть - пропускаю тест
+    //skipIfNotFixed(0000001);
 
     //Авторизуемся под администратором
     app.web().loginWeb("administrator", "root");

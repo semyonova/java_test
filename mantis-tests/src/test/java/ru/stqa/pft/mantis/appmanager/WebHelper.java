@@ -17,6 +17,7 @@ public class WebHelper extends BaseHelper {
 
   //смена пароля указанному пользователю
   public void resetPassword (String user){
+    click(By.linkText("Manage"));
     click(By.linkText("Manage Users"));
     click(By.linkText(user));
     click(By.cssSelector("input[value='Reset Password']"));
