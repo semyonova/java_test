@@ -50,9 +50,6 @@ public class SoapHelper {
     //Создаём баг в системе Мантис через соап протокол
     BigInteger issueId = mc.mc_issue_add("administrator", "root", issueData);
 
-    //Получаем созданный баг в Мантисе
-    IssueData createdIssueData = mc.mc_issue_get("administrator", "root", issueId);
-
     //Преобразуем полученный баг (ИшьюДата) в объект Ишью
     return convertToIssue(issueId.intValue());
   }
