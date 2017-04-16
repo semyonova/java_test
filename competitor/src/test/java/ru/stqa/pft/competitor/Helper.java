@@ -37,8 +37,6 @@ public class Helper {
 
     //Находим каждую строку
     for (WebElement row : rows) {
-      //System.out.println("");
-     // System.out.println(row.getText());
 
       //Находим каждую ячейку
       List<WebElement> cells = row.findElements(By.tagName("td"));
@@ -118,8 +116,6 @@ public class Helper {
       row.createCell(6).setCellValue(tariff.getCell6());
       m = m + 1;
     }
-
-
 
     book.write(new FileOutputStream("C:\\Users\\Evgeniya\\Downloads\\tariff.xls"));
     book.close();
