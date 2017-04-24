@@ -76,6 +76,18 @@ public class ContactData {
   @Expose
   private String photo;
 
+  @Transient
+  private String detailInfo;
+
+  public String getDetailInfo() {
+    return detailInfo;
+  }
+
+  public ContactData withDetailInfo(String detailInfo) {
+    this.detailInfo = detailInfo;
+    return this;
+  }
+
   public File getPhoto() {
     return new File(photo);
   }

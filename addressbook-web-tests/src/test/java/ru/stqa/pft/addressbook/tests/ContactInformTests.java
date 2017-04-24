@@ -16,15 +16,11 @@ public class ContactInformTests extends BaseTest {
     app.goTo().HomePage();
     ContactData contact = app.contact().all().iterator().next();
     ContactData contactInfoFromEditForm = app.contact().infoFromEditForm(contact);
-    ContactData contactInfoFromDetails = app.contact().infoFromDetails(contact);
 
     //Сравниваем данные контакта с главной страницы с данными на странице редактирования
     assertThat(contact.getAllPhone(), equalTo(mergePhones(contactInfoFromEditForm)));
     assertThat(contact.getAllEmails(), equalTo(mergeEmails(contactInfoFromEditForm)));
     assertThat(cleanedAddressMain(contact.getAddress()), equalTo(cleanedAddress(contactInfoFromEditForm.getAddress())));
-
-    //Сравниваем данные контакта на странице редактирования с данными в карточке (тест в разработке)
-
   }
 
   public static String cleaned (String phone){
@@ -41,7 +37,6 @@ public class ContactInformTests extends BaseTest {
     return phone.replaceAll("\\n"," ");
   }
 
-
   public String mergePhones(ContactData contact){
     return Arrays.asList(contact.getPhoneHome(), contact.getPhoneMobile(), contact.getPhoneWork())
             .stream().filter((s) -> ! s.equals(""))
@@ -54,11 +49,4 @@ public class ContactInformTests extends BaseTest {
             .stream().filter((s) -> ! s.equals(""))
             .collect(Collectors.joining("\n"));
   }
-
-  @Test
-  public void testContactPhones1() {
-    ContactData contact = app.contact().all().iterator().next();
-    app.contact().infoFromDetails(contact);
-  }
-
 }

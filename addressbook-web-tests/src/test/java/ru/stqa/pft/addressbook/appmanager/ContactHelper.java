@@ -170,7 +170,6 @@ public class ContactHelper extends BaseHelper {
     String email2 = wd.findElement(By.name("email2")).getAttribute("value");
     String email3 = wd.findElement(By.name("email3")).getAttribute("value");
     String address = wd.findElement(By.xpath(".//textarea[@name='address']")).getText();
-    System.out.println(address);
     wd.navigate().back();
     return new ContactData().
             withId(contact.getId()).withFirstName(firstname).withLastName(lastname)
@@ -181,21 +180,10 @@ public class ContactHelper extends BaseHelper {
 
   public ContactData infoFromDetails(ContactData contact) {
     viewDetail(contact.getId());
-
     String element = wd.findElement(By.xpath(".//div[@id='content']")).getText();
-    System.out.println(element);
-    //Имя
-    //Телефон
-    //Эл.почта
-    //Адрес
-    String Address = wd.findElement(By.xpath(".//div[@id='content']/br[3]")).getText();
-    System.out.println(Address);
     wd.navigate().back();
-    return new ContactData().withLastName(element);
-            /*withId(contact.getId()).withFirstName(firstname).withLastName(lastname)
-            .withPhoneHome(home).withPhoneMobile(mobile).withPhoneWork(work)
-            .withEmail(email).withEmail2(email2).withEmail3(email3)
-            .withAddress(address);*/
+    return new ContactData().withDetailInfo(element
+            .replaceAll("\\s", "").replaceAll("H:","").replaceAll("M:","").replaceAll("W:",""));
   }
 }
 
