@@ -144,10 +144,8 @@ public class ContactHelper extends BaseHelper {
     //Записываем веб-элементы в созданный ранее список(массив)
     for (WebElement element : elements) {
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
-      System.out.println(id);
       String lastName = element.findElement(By.xpath(".//td[2]")).getText();
       String firstName = element.findElement(By.xpath(".//td[3]")).getText();
-      System.out.println(firstName);
       String address = element.findElement(By.xpath(".//td[4]")).getText();
       String allEmails = element.findElement(By.xpath(".//td[5]")).getText();
       String allPhones = element.findElement(By.xpath(".//td[6]")).getText();
@@ -178,6 +176,7 @@ public class ContactHelper extends BaseHelper {
             .withAddress(address);
   }
 
+  //Считывает данные с детальной страницы контакта
   public ContactData infoFromDetails(ContactData contact) {
     viewDetail(contact.getId());
     String element = wd.findElement(By.xpath(".//div[@id='content']")).getText();

@@ -23,15 +23,17 @@ public class ContactDetailTests extends BaseTest {
     assertThat(contactInfoFromDetails.getDetailInfo(), equalTo(mergeAll(contactInfoFromEditForm)));
   }
 
-  public static String pureCleaned (String phone){
-    return phone.replaceAll("\\s","");
-  }
-
+  //Соединяем поля с детальной страницы в один блок
   public String mergeAll(ContactData contact){
     return Arrays.asList(contact.getFirstName(), contact.getLastName(), contact.getAddress(),
             contact.getPhoneHome(), contact.getPhoneMobile(), contact.getPhoneWork())
             .stream().filter((s) -> ! s.equals(""))
             .map(ContactDetailTests::pureCleaned)
             .collect(Collectors.joining(""));
+  }
+
+  //Удаляет пробелы из текста общего блока
+  public static String pureCleaned (String phone){
+    return phone.replaceAll("\\s","");
   }
 }
