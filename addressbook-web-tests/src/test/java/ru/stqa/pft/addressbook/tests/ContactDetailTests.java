@@ -17,7 +17,11 @@ public class ContactDetailTests extends BaseTest {
 
     ContactData contact = app.contact().all().iterator().next();
     ContactData contactInfoFromEditForm = app.contact().infoFromEditForm(contact);
+    System.out.println(mergeAll(contactInfoFromEditForm));
     ContactData contactInfoFromDetails = app.contact().infoFromDetails(contact);
+    System.out.println(contactInfoFromDetails.getDetailInfo());
+
+    System.out.println(getSite("se.g@ya.ru"));
 
     //Сравниваем данные контакта на странице редактирования с данными в карточке
     assertThat(contactInfoFromDetails.getDetailInfo(), equalTo(mergeAll(contactInfoFromEditForm)));
@@ -25,15 +29,17 @@ public class ContactDetailTests extends BaseTest {
 
   //Соединяем поля с детальной страницы в один блок
   public String mergeAll(ContactData contact){
-    return Arrays.asList(contact.getFirstName(), contact.getLastName(), contact.getAddress(),
-            contact.getPhoneHome(), contact.getPhoneMobile(), contact.getPhoneWork())
+    return Arrays.asList(contact.getFirstName(), " ", contact.getLastName(), "\\n", contact.getAddress(), "\\n",
+            "\\nH: ", contact.getPhoneHome(), "\\nM: ", contact.getPhoneMobile(), "\\nW: ", contact.getPhoneWork(), "\\n",
+            "\\n", contact.getEmail(), getSite(contact.getEmail()),
+            ")\\n", contact.getEmail2(), getSite(contact.getEmail2()),
+            ")\\n", contact.getEmail3(), getSite(contact.getEmail3()), ")")
             .stream().filter((s) -> ! s.equals(""))
-            .map(ContactDetailTests::pureCleaned)
             .collect(Collectors.joining(""));
   }
 
-  //Удаляет пробелы из текста общего блока
-  public static String pureCleaned (String phone){
-    return phone.replaceAll("\\s","");
+  public static String getSite(String email){
+    return email.replaceAll("([A-za-zа-яА-я0-9\\.]*)@"," (www.");
   }
+
 }

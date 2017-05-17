@@ -181,8 +181,7 @@ public class ContactHelper extends BaseHelper {
     viewDetail(contact.getId());
     String element = wd.findElement(By.xpath(".//div[@id='content']")).getText();
     wd.navigate().back();
-    return new ContactData().withDetailInfo(element
-            .replaceAll("\\s", "").replaceAll("H:","").replaceAll("M:","").replaceAll("W:",""));
+    return new ContactData().withDetailInfo(element);
   }
 }
 
