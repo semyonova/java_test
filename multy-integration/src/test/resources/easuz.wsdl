@@ -1,0 +1,1525 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:ns1="http://api.fabrikant.ru/multi-integration/easuz/method" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="MultiIntegrationService" targetNamespace="http://api.fabrikant.ru/multi-integration/easuz/method">
+
+    <wsdl:types><xsd:schema xmlns="http://api.fabrikant.ru/multi-integration/easuz/types/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://api.fabrikant.ru/multi-integration/easuz/types/" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" targetNamespace="http://api.fabrikant.ru/multi-integration/easuz/types/" elementFormDefault="qualified">
+
+	<xsd:simpleType name="idString">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="255"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="header">
+		<xsd:sequence>
+			<xsd:element name="INN" type="tns:inn">
+				<xsd:annotation>
+					<xsd:documentation> ИНН организатора </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KPP" type="tns:kpp" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation> КПП организатор </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OGRN" type="tns:ogrn" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation> ОГРН организатора </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="baseResponse" abstract="true"/>
+
+	<xsd:complexType name="errorData">
+		<xsd:sequence>
+			<xsd:element name="Code" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Message" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="currency">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="RUB">
+				<xsd:annotation>
+					<xsd:documentation>Российский рубль</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="USD">
+				<xsd:annotation>
+					<xsd:documentation>Американский доллар</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EUR">
+				<xsd:annotation>
+					<xsd:documentation>Евро</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GBP">
+				<xsd:annotation>
+					<xsd:documentation>Фунт стерлингов</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UAH">
+				<xsd:annotation>
+					<xsd:documentation>Украинская гривна</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="customer">
+		<xsd:annotation>
+			<xsd:documentation>Данные заказчика</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="INN" type="tns:inn"/>
+			<xsd:element name="OGRN" type="tns:ogrn" minOccurs="0"/>
+			<xsd:element name="KPP" type="tns:kpp" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="inn">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d{10,12}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ogrn">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d{13,15}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="kpp">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d{9}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="okpdCode">
+		<xsd:annotation>
+			<xsd:documentation>Код ОКДП</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="20"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="okvedCode">
+		<xsd:annotation>
+			<xsd:documentation>Код ОКВЭД</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="20"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="okeiCode">
+		<xsd:annotation>
+			<xsd:documentation>Код ОКЕИ</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d+"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="okatoCode">
+		<xsd:annotation>
+			<xsd:documentation>Код ОКАТО</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d{11}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="price">
+		<xsd:restriction base="xsd:decimal">
+			<xsd:pattern value="\d{1,15}(\.\d{1,2})?"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="quantity">
+		<xsd:restriction base="xsd:decimal">
+			<xsd:pattern value="\d{1,13}(\.\d{1,3})?"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ndsType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="nds_10">
+				<xsd:annotation>
+					<xsd:documentation>В том числе НДС 10%</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="nds_18">
+				<xsd:annotation>
+					<xsd:documentation>В том числе НДС 18%</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="without_nds">
+				<xsd:annotation>
+					<xsd:documentation>Без НДС</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="not_payer_nds">
+				<xsd:annotation>
+					<xsd:documentation>Без НДС (плательщиком НДС не является)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="not_subject_to_nds">
+				<xsd:annotation>
+					<xsd:documentation>НДС не облагается</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="priceVisibility">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="own">
+				<xsd:annotation>
+					<xsd:documentation>Только собственные предложения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="best">
+				<xsd:annotation>
+					<xsd:documentation>Лучшая цена на данный момент</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="all">
+				<xsd:annotation>
+					<xsd:documentation>Цены всех поставщиков</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="purchaseMode">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="open">
+				<xsd:annotation>
+					<xsd:documentation>открытая форма</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="closed">
+				<xsd:annotation>
+					<xsd:documentation>закрытая форма (необходимо разослать персональные приглашения)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="LotType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="mtr">
+				<xsd:annotation>
+					<xsd:documentation>МТР</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="work">
+				<xsd:annotation>
+					<xsd:documentation>Работы</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="service">
+				<xsd:annotation>
+					<xsd:documentation>Услуги</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="fileInstance">
+		<xsd:annotation>
+			<xsd:documentation>
+				Файл
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="FileName" minOccurs="1">
+				<xsd:simpleType>
+					<xsd:annotation>
+						<xsd:documentation>Имя файла, включая расширение</xsd:documentation>
+					</xsd:annotation>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="255"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Title" minOccurs="1">
+				<xsd:simpleType>
+					<xsd:annotation>
+						<xsd:documentation>Название файла</xsd:documentation>
+					</xsd:annotation>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="255"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Description" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:annotation>
+						<xsd:documentation>Описание файла</xsd:documentation>
+					</xsd:annotation>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="255"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Content" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream">
+				<xsd:annotation>
+					<xsd:documentation>Содержимое файла в base64Binary</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema><xsd:schema xmlns="http://api.fabrikant.ru/multi-integration/easuz/prepareProcedure/" xmlns:tns="http://api.fabrikant.ru/multi-integration/easuz/prepareProcedure/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://api.fabrikant.ru/multi-integration/easuz/types/" targetNamespace="http://api.fabrikant.ru/multi-integration/easuz/prepareProcedure/" elementFormDefault="qualified">
+
+	<xsd:import namespace="http://api.fabrikant.ru/multi-integration/easuz/types/"/>
+
+	<xsd:complexType name="prepareProcedurePurchase">
+		<xsd:sequence>
+			<xsd:element name="Header" type="ns1:header">
+				<xsd:annotation>
+					<xsd:documentation>Реквизиты организатора</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PurchaseId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation>ID процедуры во внешней системе</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ProcedurePurchaseType" type="tns:procedurePurchaseType">
+				<xsd:annotation>
+					<xsd:documentation>Тип процедуры во внешней системе</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Purchase" type="tns:procedurePurchase">
+				<xsd:annotation>
+					<xsd:documentation> Данные процедуры </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="procedurePurchase">
+		<xsd:annotation>
+			<xsd:documentation>Процедура</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="PurchaseMode" type="ns1:purchaseMode">
+				<xsd:annotation>
+					<xsd:documentation>Форма процедуры закупки</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<!--Нужны ли элементы:-->
+			<!--hide_participants - Скрывать участников и заявки (Только для закрытых торгов)-->
+			<!--has_prequalification - Участие по результату квалификации (Только для закрытых торгов)-->
+			<xsd:element name="PurchaseName">
+				<xsd:annotation>
+					<xsd:documentation>Наименование процедуры</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="255"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="CommonName">
+				<xsd:annotation>
+					<xsd:documentation>Общее наименование закупки</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="300"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="SubmissionEndDate" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Дата завершения приема заявок</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ReviewDate" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Дата и время рассмотрения заявок</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ReviewPlace" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Место рассмотрения заявок</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="255"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="FinishDate" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Дата подведения итогов процедуры</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PriceVisibility" type="ns1:priceVisibility">
+				<xsd:annotation>
+					<xsd:documentation>Видимость цен для участников</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NeedUnsealProtocol" type="xsd:boolean" minOccurs="0" default="1">
+				<xsd:annotation>
+					<xsd:documentation>Необходим ли протокол вскрытия конвертов?</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NotRNP" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Требовать отсутствия участников в РНП</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IsProlongationUnsealingDate" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Продление приема заявок при изменении предложения после окончания приема заявок</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Unscheduled" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Закупка осуществляется вследствие аварии (Только с интеграцией с ЕИС)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Customer" type="ns1:customer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Заказчик</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CustomerContacts" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Контактная информация заказчика</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LotList">
+				<xsd:annotation>
+					<xsd:documentation>Список лотов</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Lot" type="tns:purchaseLot" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="purchaseLot">
+		<xsd:sequence>
+			<xsd:element name="LotId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор лота</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LotType" type="ns1:LotType">
+				<xsd:annotation>
+					<xsd:documentation>Тип предмета закупки</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name">
+				<xsd:annotation>
+					<xsd:documentation>Краткое описание предмета договора</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="2000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="PlanInfo" type="tns:planInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Информация о плане и позиции</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OkpdList">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="OkpdCode" type="ns1:okpdCode" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>Предмет договора (ОКПД2)</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="OkvedCode" type="ns1:okvedCode" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Предмет договора (ОКВЭД2)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Quantity" type="ns1:quantity" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Количество</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Units" type="ns1:okeiCode" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ОКЕИ</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Currency" type="ns1:currency">
+				<xsd:annotation>
+					<xsd:documentation>Валюта</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PriceInfo" type="tns:priceInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Начальная цена</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ProposalEnsuring" type="ns1:price" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Сумма обеспечения заявки на участие</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SupplyCondition">
+				<xsd:annotation>
+					<xsd:documentation>Условия поставки/оказания услуг</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="2000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="SupplyPlace">
+				<xsd:annotation>
+					<xsd:documentation>Место оказания услуг</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="4000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="SupplyTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Сроки оказания услуг/поставки товаров</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="4000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="MspLimitation" type="mspLimitation">
+				<xsd:annotation>
+					<xsd:documentation>Особенности участия субъектов малого и среднего предпринимательства</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MspProvider" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>В отношении участников закупки установлено требование о привлечении к исполнению договора субподрядчиков (соисполнителей) из числа субъектов малого и среднего предпринимательства</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PaymentConditions" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Форма, сроки и порядок оплаты</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="4000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Comment" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Комментарий</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="4000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="prepareAuction">
+		<xsd:sequence>
+			<xsd:element name="Header" type="ns1:header">
+				<xsd:annotation>
+					<xsd:documentation>Реквизиты организатора</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PurchaseId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation>ID процедуры во внешней системе</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AuctionType" type="tns:auctionType">
+				<xsd:annotation>
+					<xsd:documentation>Тип процедуры во внешней системе</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Auction" type="tns:auction">
+				<xsd:annotation>
+					<xsd:documentation> Данные процедуры </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="auction">
+		<xsd:annotation>
+			<xsd:documentation>Аукцион</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="PurchaseMode" type="ns1:purchaseMode">
+				<xsd:annotation>
+					<xsd:documentation>Форма процедуры закупки</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<!--Нужны ли элементы:-->
+			<!--hide_participants - Скрывать участников и заявки (Только для закрытых торгов)-->
+			<!--has_prequalification - Участие по результату квалификации (Только для закрытых торгов)-->
+			<xsd:element name="PurchaseName">
+				<xsd:annotation>
+					<xsd:documentation>Наименование процедуры</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="255"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="CommonName">
+				<xsd:annotation>
+					<xsd:documentation>Общее наименование закупки</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="300"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="NotRNP" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Требовать отсутствия участников в РНП</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Unscheduled" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Закупка осуществляется вследствие аварии (Только с интеграцией с ЕИС)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SendingProtocolsByLot" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Отправка протоколов по лоту</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Customer" type="ns1:customer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Заказчик</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CustomerContacts" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Контактная информация заказчика</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="4000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="LotList">
+				<xsd:annotation>
+					<xsd:documentation>Список лотов</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Lot" type="tns:auctionLot" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="auctionLot">
+		<xsd:sequence>
+			<xsd:element name="DeliveryRegion" type="ns1:okatoCode" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation> Регион поставки товаров (ОКАТО)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LotId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор лота</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name">
+				<xsd:annotation>
+					<xsd:documentation>Краткое описание предмета договора</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="2000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="PlanInfo" type="tns:planInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Информация о плане и позиции</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OkpdList">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="OkpdCode" type="ns1:okpdCode" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>Предмет договора (ОКПД2)</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="OkvedCode" type="ns1:okvedCode" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Предмет договора (ОКВЭД2)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Customer" type="ns1:customer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Заказчик</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CustomerContacts" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Контактная информация заказчика</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="4000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:sequence minOccurs="0">
+				<xsd:element name="Quantity" type="ns1:quantity">
+					<xsd:annotation>
+						<xsd:documentation>Количество</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="Units" type="ns1:okeiCode">
+					<xsd:annotation>
+						<xsd:documentation>ОКЕИ</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="PricePerUnit" type="ns1:price" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>Цена за единицу</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:element name="Currency" type="ns1:currency">
+				<xsd:annotation>
+					<xsd:documentation>Валюта</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="StartingPrice" type="ns1:price">
+				<xsd:annotation>
+					<xsd:documentation>Начальная цена предмета договора</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NdsType" type="ns1:ndsType">
+				<xsd:annotation>
+					<xsd:documentation>НДС</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MspLimitation" type="mspLimitation">
+				<xsd:annotation>
+					<xsd:documentation>Особенности участия субъектов малого и среднего предпринимательства</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MspProvider" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>В отношении участников закупки установлено требование о привлечении к исполнению договора субподрядчиков (соисполнителей) из числа субъектов малого и среднего предпринимательства</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SubmissionEndDate" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Дата завершения приема заявок</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ReviewDate" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Дата и время рассмотрения заявок</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BiddingDate" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Дата начала аукциона</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FinishDate" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Дата подведения итогов процедуры</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SupplyCondition">
+				<xsd:annotation>
+					<xsd:documentation>Условия поставки/оказания услуг</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="2000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="PaymentConditions" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Форма, сроки и порядок оплаты</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="4000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="GiveupInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Сведения о праве Заказчика (Организатора закупки) отказаться от проведения закупк</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="4000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="AdvantagesInfo" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Информация о наличии преференций</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1"/>
+						<xsd:maxLength value="4000"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="priceInfo">
+		<xsd:sequence>
+			<xsd:element name="StartingPrice" type="ns1:price">
+				<xsd:annotation>
+					<xsd:documentation>Начальная цена предмета договора</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PricePerUnit" type="ns1:price" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Цена за единицу</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NdsType" type="ns1:ndsType">
+				<xsd:annotation>
+					<xsd:documentation>НДС</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="planInfo">
+		<xsd:sequence>
+			<xsd:element name="PlanRegistrationNumber">
+				<xsd:annotation>
+					<xsd:documentation>Регистрационный номер плана</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="\d{10}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="PositionNumber" type="xsd:long">
+				<xsd:annotation>
+					<xsd:documentation>Номер позиции плана</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="mspLimitation">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation>Нет ограничений по принадлежности к субъектам МСП</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation>Ограничение по принадлежности к субъектам малого предпринимательства</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation>Ограничение по принадлежности к субъектам Среднего предпринимательства</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation>Ограничение по принадлежности к субъектам малого и среднего предпринимательства</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="procedurePurchaseType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="tender">
+				<xsd:annotation>
+					<xsd:documentation>Конкурс</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="proposal_request">
+				<xsd:annotation>
+					<xsd:documentation>Запрос предложений</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="auctionType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="auction">
+				<xsd:annotation>
+					<xsd:documentation>Аукцион</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="quotations_request">
+				<xsd:annotation>
+					<xsd:documentation>Запрос котировок</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="prepareProcedureResponse">
+		<xsd:choice>
+			<xsd:sequence>
+				<xsd:element name="ProcedureUrl" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation>url извещения</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="ProcedureNumber" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation>номер извещения на ЭТП</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+
+			<xsd:element name="Error" type="ns1:errorData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Ошибка выполнения запроса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:choice>
+	</xsd:complexType>
+
+</xsd:schema><xsd:schema xmlns="http://api.fabrikant.ru/multi-integration/easuz/uploadFile/" xmlns:tns="http://api.fabrikant.ru/multi-integration/easuz/uploadFile/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://api.fabrikant.ru/multi-integration/easuz/types/" targetNamespace="http://api.fabrikant.ru/multi-integration/easuz/uploadFile/" elementFormDefault="qualified">
+
+	<xsd:import namespace="http://api.fabrikant.ru/multi-integration/easuz/types/"/>
+
+	<xsd:complexType name="uploadProcedureFile">
+		<xsd:sequence>
+			<xsd:element name="Header" type="ns1:header">
+				<xsd:annotation>
+					<xsd:documentation>Реквизиты организатора</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PurchaseId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation> Id процедуры </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LotId" type="ns1:idString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation> Id лота, к которому следует прикрепить файл. Если не указан, файл будет прикреплен к общей части извещения </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FileId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation> Идентификатор файла </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FileInstance" type="ns1:fileInstance">
+				<xsd:annotation>
+					<xsd:documentation> Файл </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="uploadProcedureFileResponse">
+		<xsd:sequence>
+			<xsd:element name="Error" minOccurs="0" type="ns1:errorData">
+				<xsd:annotation>
+					<xsd:documentation> Описание ошибки в случае наличия таковой </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema><xsd:schema xmlns="http://api.fabrikant.ru/multi-integration/easuz/procedureInfo/" xmlns:tns="http://api.fabrikant.ru/multi-integration/easuz/procedureInfo/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://api.fabrikant.ru/multi-integration/easuz/types/" targetNamespace="http://api.fabrikant.ru/multi-integration/easuz/procedureInfo/" elementFormDefault="qualified">
+
+	<xsd:import namespace="http://api.fabrikant.ru/multi-integration/easuz/types/"/>
+
+	<xsd:complexType name="getProcedureInfo">
+		<xsd:sequence>
+			<xsd:element name="Header" type="ns1:header">
+				<xsd:annotation>
+					<xsd:documentation>Реквизиты организатора</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PurchaseId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation>ID процедуры во внешней системе</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="getProcedureInfoResponse">
+		<xsd:sequence>
+			<xsd:element name="ProcedureUrl" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>URL извещения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ProcedureNumber" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>номер извещения на ЭТП</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LotInfoList">
+				<xsd:annotation>
+					<xsd:documentation>Информация по лотам</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="LotInfo" type="tns:lotInfo" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="lotInfo">
+		<xsd:sequence>
+			<xsd:element name="LotId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор лота</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Status">
+				<xsd:annotation>
+					<xsd:documentation>Статус лота</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="created">
+							<xsd:annotation>
+								<xsd:documentation>Ожидает публикацию</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="published">
+							<xsd:annotation>
+								<xsd:documentation>Идет прием заявок</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="wait_decision">
+							<xsd:annotation>
+								<xsd:documentation>Ожидает решения организатора</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="unsealed">
+							<xsd:annotation>
+								<xsd:documentation>Ожидает решение по определению участников</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="retrading_waiting_begin">
+							<xsd:annotation>
+								<xsd:documentation>Ожидает начала переторжки</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="retrading_under_way">
+							<xsd:annotation>
+								<xsd:documentation>Идёт переторжка</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="deleted">
+							<xsd:annotation>
+								<xsd:documentation>Процедура отменена</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="OosStatus">
+				<xsd:annotation>
+					<xsd:documentation>Статус отправки на ООС</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="not_sent">
+							<xsd:annotation>
+								<xsd:documentation>Не отправлено на ООС</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="sent">
+							<xsd:annotation>
+								<xsd:documentation>Отправлено на ООС</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="published">
+							<xsd:annotation>
+								<xsd:documentation>Опубликовано на ООС</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="OosUrl" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>URL процедуры на ООС</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OosRegNumber" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Регистрационный номер процедуры на ООС</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+</xsd:schema><xsd:schema xmlns="http://api.fabrikant.ru/multi-integration/easuz/downloadFile/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://api.fabrikant.ru/multi-integration/easuz/downloadFile/" xmlns:ns1="http://api.fabrikant.ru/multi-integration/easuz/types/" targetNamespace="http://api.fabrikant.ru/multi-integration/easuz/downloadFile/" elementFormDefault="qualified">
+
+	<xsd:import namespace="http://api.fabrikant.ru/multi-integration/easuz/types/"/>
+
+	<xsd:complexType name="getFile">
+		<xsd:sequence>
+			<xsd:element name="FileId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор файла</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="getFileResponse">
+		<xsd:sequence>
+			<xsd:element name="FileId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор файла</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FileInstance" type="ns1:fileInstance">
+				<xsd:annotation>
+					<xsd:documentation>Файл</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema><xsd:schema xmlns="http://api.fabrikant.ru/multi-integration/easuz/protocol/" xmlns:tns="http://api.fabrikant.ru/multi-integration/easuz/protocol/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://api.fabrikant.ru/multi-integration/easuz/types/" targetNamespace="http://api.fabrikant.ru/multi-integration/easuz/protocol/" elementFormDefault="qualified">
+
+	<xsd:import namespace="http://api.fabrikant.ru/multi-integration/easuz/types/"/>
+
+	<xsd:complexType name="getProtocol">
+		<xsd:sequence>
+			<xsd:element name="Header" type="ns1:header">
+				<xsd:annotation>
+					<xsd:documentation>Реквизиты организатора</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PurchaseId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation> Id процедуры </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LotId" type="ns1:idString">
+				<xsd:annotation>
+					<xsd:documentation> Id лота </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ProtocolType" type="tns:protocolType">
+				<xsd:annotation>
+					<xsd:documentation> Тип протокола </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="getProtocolResponse">
+		<xsd:choice>
+			<xsd:element name="ProtocolFile" type="ns1:fileInstance">
+				<xsd:annotation>
+					<xsd:documentation> Файл протокола </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Error" type="ns1:errorData">
+				<xsd:annotation>
+					<xsd:documentation> Описание ошибки в случае наличия таковой </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="protocolData">
+		<xsd:annotation>
+			<xsd:documentation>Протокол</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Protocol" type="ns1:idString"/>
+			<xsd:element name="ProtocolFileList" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Файлы, приложенные к протоколу</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="FileId" type="ns1:idString" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="protocolType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="unsealing">
+				<xsd:annotation>
+					<xsd:documentation> Протокол вскрытия конвертов </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="determination">
+				<xsd:annotation>
+					<xsd:documentation> Протокол определения участников </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="determination_final">
+				<xsd:annotation>
+					<xsd:documentation> Протокол оценки и сопоставления </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="final">
+				<xsd:annotation>
+					<xsd:documentation> Протокол проведения процедуры </xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+</xsd:schema><xsd:schema xmlns:tns="http://api.fabrikant.ru/multi-integration/easuz/method" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://api.fabrikant.ru/multi-integration/easuz/types/" xmlns:ns2="http://api.fabrikant.ru/multi-integration/easuz/prepareProcedure/" xmlns:ns3="http://api.fabrikant.ru/multi-integration/easuz/uploadFile/" xmlns:ns4="http://api.fabrikant.ru/multi-integration/easuz/procedureInfo/" xmlns:ns5="http://api.fabrikant.ru/multi-integration/easuz/downloadFile/" xmlns:ns6="http://api.fabrikant.ru/multi-integration/easuz/protocol/" targetNamespace="http://api.fabrikant.ru/multi-integration/easuz/method" elementFormDefault="qualified">
+
+    <xsd:import namespace="http://api.fabrikant.ru/multi-integration/easuz/types/"/>
+    <xsd:import namespace="http://api.fabrikant.ru/multi-integration/easuz/prepareProcedure/"/>
+    <xsd:import namespace="http://api.fabrikant.ru/multi-integration/easuz/uploadFile/"/>
+    <xsd:import namespace="http://api.fabrikant.ru/multi-integration/easuz/procedureInfo/"/>
+    <xsd:import namespace="http://api.fabrikant.ru/multi-integration/easuz/downloadFile/"/>
+    <xsd:import namespace="http://api.fabrikant.ru/multi-integration/easuz/protocol/"/>
+
+	<xsd:element name="PrepareProcedurePurchase" type="ns2:prepareProcedurePurchase">
+        <xsd:annotation>
+            <xsd:documentation>Создать/изменить извещение "Комплексная закупка"</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="PrepareAuction" type="ns2:prepareAuction">
+        <xsd:annotation>
+            <xsd:documentation>Создать/изменить извещение "Аукцион"</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="PrepareProcedureResponse" type="ns2:prepareProcedureResponse"/>
+
+    <xsd:element name="UploadProcedureFile" type="ns3:uploadProcedureFile">
+        <xsd:annotation>
+            <xsd:documentation>Создать/изменить извещение "Аукцион"</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="UploadProcedureFileResponse" type="ns3:uploadProcedureFileResponse"/>
+
+    <xsd:element name="GetProcedureInfo" type="ns4:getProcedureInfo">
+        <xsd:annotation>
+            <xsd:documentation>Создать/изменить извещение "Аукцион"</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="GetProcedureInfoResponse" type="ns4:getProcedureInfoResponse"/>
+
+    <xsd:element name="GetProtocol" type="ns6:getProtocol">
+        <xsd:annotation>
+            <xsd:documentation>Создать/изменить извещение "Аукцион"</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="GetProtocolResponse" type="ns6:getProtocolResponse"/>
+
+    <xsd:element name="GetFile" type="ns5:getFile">
+        <xsd:annotation>
+            <xsd:documentation>Получить файл</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="GetFileResponse" type="ns5:getFileResponse"/>
+
+    <xsd:element name="CheckRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="RequestId" type="ns1:idString">
+                    <xsd:annotation>
+                        <xsd:documentation>Идентификатор сохраненного запроса</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="CheckRequestResponse" type="tns:checkRequestResponse"/>
+
+    <xsd:complexType name="checkRequestResponse">
+        <xsd:sequence>
+            <xsd:element name="RequestId" type="ns1:idString">
+                <xsd:annotation>
+                    <xsd:documentation>Идентификатор сохраненного запроса</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="ResponseIsReady" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation>Признак того, что запрос выполнен и ответ на запрос подготовлен</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="Response" type="tns:responseData" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="responseData">
+        <xsd:choice>
+            <xsd:element ref="tns:PrepareProcedureResponse"/>
+            <xsd:element ref="tns:UploadProcedureFileResponse"/>
+        </xsd:choice>
+    </xsd:complexType>
+
+    <xsd:element name="MessageAccepted" type="tns:messageAccepted"/>
+
+    <xsd:complexType name="messageAccepted">
+        <xsd:sequence>
+            <xsd:element name="RequestId" type="ns1:idString">
+                <xsd:annotation>
+                    <xsd:documentation>Идентификатор сохраненного запроса</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="EstimateTime" type="xsd:nonNegativeInteger">
+                <xsd:annotation>
+                    <xsd:documentation>Примерное время выполнения запроса в секундах</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema></wsdl:types>
+
+    <wsdl:message name="IEASUZIntegrationService_PrepareProcedurePurchase_InputMessage">
+        <wsdl:part name="parameters" element="ns1:PrepareProcedurePurchase"/>
+    </wsdl:message>
+
+    <wsdl:message name="IEASUZIntegrationService_PrepareAuction_InputMessage">
+        <wsdl:part name="parameters" element="ns1:PrepareAuction"/>
+    </wsdl:message>
+
+    <wsdl:message name="IEASUZIntegrationService_UploadProcedureFile_InputMessage">
+        <wsdl:part name="parameters" element="ns1:UploadProcedureFile"/>
+    </wsdl:message>
+
+    <wsdl:message name="IEASUZIntegrationService_GetProtocol_InputMessage">
+        <wsdl:part name="parameters" element="ns1:GetProtocol"/>
+    </wsdl:message>
+
+    <wsdl:message name="IEASUZIntegrationService_GetProtocol_OutputMessage">
+        <wsdl:part name="parameters" element="ns1:GetProtocolResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="IEASUZIntegrationService_OutputMessage">
+        <wsdl:part name="parameters" element="ns1:MessageAccepted"/>
+    </wsdl:message>
+
+
+    <wsdl:message name="IEASUZIntegrationService_GetProcedureInfo_InputMessage">
+        <wsdl:part name="parameters" element="ns1:GetProcedureInfo"/>
+    </wsdl:message>
+
+    <wsdl:message name="IEASUZIntegrationService_GetProcedureInfo_OutputMessage">
+        <wsdl:part name="parameters" element="ns1:GetProcedureInfoResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="IEASUZIntegrationService_GetFile_InputMessage">
+        <wsdl:part name="parameters" element="ns1:GetFile"/>
+    </wsdl:message>
+
+    <wsdl:message name="IEASUZIntegrationService_GetFile_OutputMessage">
+        <wsdl:part name="parameters" element="ns1:GetFileResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="IEASUZIntegrationService_CheckRequest_InputMessage">
+        <wsdl:part name="parameters" element="ns1:CheckRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="IEASUZIntegrationService_CheckRequest_OutputMessage">
+        <wsdl:part name="parameters" element="ns1:CheckRequestResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="IEASUZIntegrationService">
+
+        <wsdl:operation name="PrepareProcedurePurchase">
+            <wsdl:input wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/PrepareProcedurePurchase" message="ns1:IEASUZIntegrationService_PrepareProcedurePurchase_InputMessage"/>
+            <wsdl:output wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/PrepareProcedurePurchaseResponse" message="ns1:IEASUZIntegrationService_OutputMessage"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="PrepareAuction">
+            <wsdl:input wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/PrepareAuction" message="ns1:IEASUZIntegrationService_PrepareAuction_InputMessage"/>
+            <wsdl:output wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/PrepareAuctionResponse" message="ns1:IEASUZIntegrationService_OutputMessage"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="UploadProcedureFile">
+            <wsdl:input wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/UploadProcedureFile" message="ns1:IEASUZIntegrationService_UploadProcedureFile_InputMessage"/>
+            <wsdl:output wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/UploadProcedureFileResponse" message="ns1:IEASUZIntegrationService_OutputMessage"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="GetProtocol">
+            <wsdl:input wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/GetProtocol" message="ns1:IEASUZIntegrationService_GetProtocol_InputMessage"/>
+            <wsdl:output wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/GetProtocolResponse" message="ns1:IEASUZIntegrationService_GetProtocol_OutputMessage"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="GetProcedureInfo">
+            <wsdl:input wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/GetProcedureInfo" message="ns1:IEASUZIntegrationService_GetProcedureInfo_InputMessage"/>
+            <wsdl:output wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/GetProcedureInfoResponse" message="ns1:IEASUZIntegrationService_GetProcedureInfo_OutputMessage"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="GetFile">
+            <wsdl:input wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/GetFile" message="ns1:IEASUZIntegrationService_GetFile_InputMessage"/>
+            <wsdl:output wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/GetFileResponse" message="ns1:IEASUZIntegrationService_GetFile_OutputMessage"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="CheckRequest">
+            <wsdl:input wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/CheckRequest" message="ns1:IEASUZIntegrationService_CheckRequest_InputMessage"/>
+            <wsdl:output wsaw:Action="http://api.fabrikant.ru/multi-integration/easuz/method/CheckRequestResponse" message="ns1:IEASUZIntegrationService_CheckRequest_OutputMessage"/>
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <wsdl:binding name="BasicHttpBinding_IEASUZIntegrationService" type="ns1:IEASUZIntegrationService">
+
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+
+        <wsdl:operation name="PrepareProcedurePurchase">
+            <soap:operation soapAction="http://api.fabrikant.ru/multi-integration/easuz/method/PrepareProcedurePurchase" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="PrepareAuction">
+            <soap:operation soapAction="http://api.fabrikant.ru/multi-integration/easuz/method/PrepareAuction" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="UploadProcedureFile">
+            <soap:operation soapAction="http://api.fabrikant.ru/multi-integration/easuz/method/UploadProcedureFile" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="GetProtocol">
+            <soap:operation soapAction="http://api.fabrikant.ru/multi-integration/easuz/method/GetProtocol" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="GetProcedureInfo">
+            <soap:operation soapAction="http://api.fabrikant.ru/multi-integration/easuz/method/GetProcedureInfo" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="GetFile">
+            <soap:operation soapAction="http://api.fabrikant.ru/multi-integration/easuz/method/GetFile" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="CheckRequest">
+            <soap:operation soapAction="http://api.fabrikant.ru/multi-integration/easuz/method/CheckRequest" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+    <wsdl:service name="EASUZIntegrationService">
+
+        <wsdl:port name="BasicHttpBinding_IEASUZIntegrationService" binding="ns1:BasicHttpBinding_IEASUZIntegrationService">
+            <wsdl:documentation>API торгово-закупочных процедур.</wsdl:documentation>
+            <soap:address location="http://demo-api.fabrikant.ru/multi-integration/easuz/"/>
+        </wsdl:port>
+
+    </wsdl:service>
+
+</wsdl:definitions>

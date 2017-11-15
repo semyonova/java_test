@@ -1,4 +1,4 @@
-package ru.stqa.pft.competitor;
+package ru.stqa.pft.multy;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;

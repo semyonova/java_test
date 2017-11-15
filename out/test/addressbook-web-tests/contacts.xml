@@ -1,0 +1,12 @@
+<list>
+  <contact>
+    <firstName>first name 0</firstName>
+    <middleName>middle name 0</middleName>
+    <lastName>last name 0</lastName>
+    <address>address 0</address>
+    <group>test 1</group>
+    <phoneMobile>8 800 800 70</phoneMobile>
+    <email>email 0</email>
+    <photo>src\test\resources\Winter.jpg</photo>
+  </contact>
+</list>

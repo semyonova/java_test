@@ -1,4 +1,4 @@
-package ru.stqa.pft.competitor;
+package ru.stqa.pft.multy;
 
 
 import org.openqa.selenium.WebDriver;

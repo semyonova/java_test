@@ -21,14 +21,12 @@
     <bytecodeTargetLevel target="1.8">
       <module name="addressbook-web-tests_main" target="1.8" />
       <module name="addressbook-web-tests_test" target="1.8" />
-      <module name="bugify-tests_main" target="1.8" />
-      <module name="bugify-tests_test" target="1.8" />
-      <module name="bugify_main" target="1.8" />
-      <module name="bugify_test" target="1.8" />
       <module name="competitor_main" target="1.8" />
       <module name="competitor_test" target="1.8" />
       <module name="mantis-tests_main" target="1.8" />
       <module name="mantis-tests_test" target="1.8" />
+      <module name="multy-integration_main" target="1.8" />
+      <module name="multy-integration_test" target="1.8" />
       <module name="rest-tests_main" target="1.8" />
       <module name="rest-tests_test" target="1.8" />
       <module name="sandbox_main" target="1.8" />

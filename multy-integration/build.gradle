@@ -1,0 +1,46 @@
+apply plugin: 'java'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+
+repositories{
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.testng:testng:6.9.10'
+    compile 'org.seleniumhq.selenium:selenium-java:2.53.1'
+    compile 'org.hamcrest:hamcrest-junit:2.0.0.0'
+    compile 'com.thoughtworks.xstream:xstream:1.4.8'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'org.apache.poi:poi:3.15'
+}
+
+buildscript{
+    repositories{
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'no.nils:wsdl2java:0.10'
+    }
+}
+apply plugin: 'no.nils.wsdl2java'
+
+wsdl2java {
+    generatedWsdlDir = file("src/main/java")  // target directory for generated source coude
+    wsdlDir = file("src/test/resources") // define to support incremental build
+    wsdlsToGenerate = [   //  2d-array of wsdls and cxf-parameters
+                          ['src/test/resources/easuz.wsdl']
+    ]
+}
+
+/* .withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+*/
+
+test{
+    useTestNG()
+}

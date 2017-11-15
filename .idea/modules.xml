@@ -11,6 +11,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mantis-tests.iml" filepath="$PROJECT_DIR$/.idea/modules/mantis-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mantis-tests_main.iml" filepath="$PROJECT_DIR$/.idea/modules/mantis-tests_main.iml" group="mantis-tests" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mantis-tests_test.iml" filepath="$PROJECT_DIR$/.idea/modules/mantis-tests_test.iml" group="mantis-tests" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/multy-integration.iml" filepath="$PROJECT_DIR$/.idea/modules/multy-integration.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/multy-integration_main.iml" filepath="$PROJECT_DIR$/.idea/modules/multy-integration_main.iml" group="multy-integration" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/multy-integration_test.iml" filepath="$PROJECT_DIR$/.idea/modules/multy-integration_test.iml" group="multy-integration" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rest-tests.iml" filepath="$PROJECT_DIR$/.idea/modules/rest-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rest-tests_main.iml" filepath="$PROJECT_DIR$/.idea/modules/rest-tests_main.iml" group="rest-tests" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rest-tests_test.iml" filepath="$PROJECT_DIR$/.idea/modules/rest-tests_test.iml" group="rest-tests" />
